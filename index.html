@@ -3,798 +3,503 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MetLife 교육만족도 · 2026</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>MetLife 오프라인 교육 만족도 대시보드</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-:root {
-  --bg: #F5F4F0;
-  --surface: #FFFFFF;
-  --header: #111827;
-  --border: #E5E7EB;
-  --border-light: #F3F4F6;
-  --text: #111827;
-  --text-muted: #6B7280;
-  --text-light: #9CA3AF;
-  --primary: #00875A;
-  --primary-bg: #ECFDF5;
-  --primary-text: #065F46;
-  --mid: #1D4ED8;
-  --mid-bg: #EFF6FF;
-  --warn: #B45309;
-  --warn-bg: #FFFBEB;
-  --danger: #B91C1C;
-  --mono: 'DM Mono', monospace;
-  --sans: 'Pretendard', -apple-system, sans-serif;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-md: 0 4px 12px rgba(0,0,0,.08);
-}
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.6; }
-
-/* ── Header ── */
-.header {
-  background: var(--header);
-  color: white;
-  padding: 18px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid var(--primary);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.header-left { display: flex; align-items: center; gap: 14px; }
-.header-logo {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--primary);
-  border: 1px solid var(--primary);
-  padding: 4px 10px;
-  border-radius: 2px;
-  white-space: nowrap;
-}
-.header-title { font-size: 15px; font-weight: 600; }
-.header-sub { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 1px; }
-.header-date { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,.5); white-space: nowrap; }
-
-/* ── Page ── */
-.page { max-width: 1240px; margin: 0 auto; padding: 28px 40px 80px; }
-
-.notice {
-  background: var(--primary-bg);
-  border-left: 3px solid var(--primary);
-  border-radius: 0 6px 6px 0;
-  padding: 9px 14px;
-  font-size: 11.5px;
-  color: var(--primary-text);
-  margin-bottom: 24px;
-}
-
-/* ── Section label ── */
-.sec-label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-.sec-label::before {
-  content: '';
-  display: block;
-  width: 3px;
-  height: 13px;
-  background: var(--primary);
-  border-radius: 2px;
-}
-
-/* ── Animations ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── KPI Row ── */
-.kpi-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 28px;
-}
-.kpi-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px 22px;
-  box-shadow: var(--shadow-sm);
-  animation: fadeUp .45s ease both;
-}
-.kpi-card:nth-child(1) { animation-delay: .05s; }
-.kpi-card:nth-child(2) { animation-delay: .10s; }
-.kpi-card:nth-child(3) { animation-delay: .15s; }
-.kpi-card:nth-child(4) { animation-delay: .20s; }
-.kpi-label {
-  font-size: 10.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-}
-.kpi-val {
-  font-family: var(--mono);
-  font-size: 40px;
-  font-weight: 500;
-  line-height: 1;
-  color: var(--text);
-  letter-spacing: -.02em;
-}
-.kpi-val.green { color: var(--primary); }
-.kpi-val .unit { font-size: 15px; color: var(--text-muted); font-weight: 400; margin-left: 2px; }
-.kpi-name { font-size: 18px; font-weight: 700; line-height: 1.25; margin-top: 2px; }
-.kpi-sub { font-size: 11px; color: var(--text-light); margin-top: 8px; }
-
-/* ── Course Ranking ── */
-.courses { display: flex; flex-direction: column; gap: 9px; margin-bottom: 28px; }
-.course-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px 22px;
-  display: grid;
-  grid-template-columns: 26px 1fr 100px 180px;
-  align-items: center;
-  gap: 18px;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow .2s, transform .15s;
-  animation: fadeUp .45s ease both;
-}
-.course-card:nth-child(1) { animation-delay: .10s; }
-.course-card:nth-child(2) { animation-delay: .15s; }
-.course-card:nth-child(3) { animation-delay: .20s; }
-.course-card:nth-child(4) { animation-delay: .25s; }
-.course-card:nth-child(5) { animation-delay: .30s; }
-.course-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
-.c-rank {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--text-light);
-  text-align: center;
-}
-.course-card:first-child .c-rank { color: var(--primary); font-weight: 500; }
-.c-name { font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.3; }
-.c-meta { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
-.c-score {
-  font-family: var(--mono);
-  font-size: 30px;
-  font-weight: 500;
-  text-align: right;
-  white-space: nowrap;
-}
-.c-score .max { font-size: 13px; color: var(--text-muted); font-weight: 400; }
-.c-score.g { color: var(--primary); }
-.c-score.b { color: var(--mid); }
-.c-score.w { color: var(--warn); }
-.bars { display: flex; flex-direction: column; gap: 4px; }
-.bar-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 10px;
-  color: var(--text-muted);
-}
-.bar-row .lbl { width: 40px; text-align: right; flex-shrink: 0; }
-.bar-bg { flex: 1; height: 4px; background: var(--border-light); border-radius: 2px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 2px; background: var(--primary); }
-.bar-fill.b { background: var(--mid); }
-.bar-fill.w { background: var(--warn); }
-.bar-row .val { font-family: var(--mono); font-size: 10px; width: 24px; flex-shrink: 0; }
-
-/* ── Dimension Table ── */
-.dim-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 28px;
-}
-.dim-table { width: 100%; border-collapse: collapse; }
-.dim-table th {
-  padding: 10px 18px;
-  text-align: left;
-  font-size: 10.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  color: var(--text-muted);
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-}
-.dim-table th:not(:first-child) { text-align: center; }
-.dim-table td {
-  padding: 13px 18px;
-  font-size: 13px;
-  border-bottom: 1px solid var(--border-light);
-  vertical-align: middle;
-}
-.dim-table tr:last-child td { border-bottom: none; }
-.dim-table tbody tr:hover td { background: var(--bg); }
-.dim-table td:not(:first-child) { text-align: center; }
-.dim-table tfoot td {
-  font-weight: 700;
-  background: var(--bg);
-  border-top: 2px solid var(--border);
-  border-bottom: none;
-}
-.chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 46px;
-  padding: 3px 7px;
-  border-radius: 4px;
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
-}
-.chip.h { background: var(--primary-bg); color: var(--primary-text); }
-.chip.m { background: var(--mid-bg); color: #1E40AF; }
-.chip.w { background: var(--warn-bg); color: #92400E; }
-.dim-note {
-  padding: 12px 18px;
-  background: var(--bg);
-  border-top: 1px solid var(--border);
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-/* ── Trend ── */
-.trend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
-.trend-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-}
-.trend-head {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border-light);
-  background: var(--bg);
-}
-.trend-course { font-size: 13px; font-weight: 700; }
-.trend-rounds { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-.trend-body { padding: 12px 18px; }
-.trend-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 0;
-  border-bottom: 1px solid var(--border-light);
-}
-.trend-row:last-child { border-bottom: none; }
-.t-dim { font-size: 11px; color: var(--text-muted); width: 56px; }
-.t-scores { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12px; color: var(--text); }
-.t-arrow { color: var(--text-light); font-size: 10px; }
-.t-delta { font-family: var(--mono); font-size: 11px; font-weight: 500; min-width: 44px; text-align: right; }
-.t-delta.up { color: var(--primary); }
-.t-delta.dn { color: var(--danger); }
-.t-delta.fl { color: var(--text-light); }
-
-/* ── Dist + Chart ── */
-.bottom-grid { display: grid; grid-template-columns: 260px 1fr; gap: 16px; margin-bottom: 28px; }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; box-shadow: var(--shadow-sm); }
-.dist-rows { margin-top: 12px; }
-.dist-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
-.d-lbl { font-family: var(--mono); font-size: 12px; font-weight: 500; width: 22px; }
-.d-bg { flex: 1; height: 6px; background: var(--border-light); border-radius: 3px; overflow: hidden; }
-.d-fill { height: 100%; border-radius: 3px; }
-.d-cnt { font-family: var(--mono); font-size: 10px; color: var(--text-light); width: 32px; }
-.d-pct { font-family: var(--mono); font-size: 11px; color: var(--text-muted); width: 34px; text-align: right; }
-.dist-summary {
-  margin-top: 14px;
-  padding: 11px 12px;
-  background: var(--primary-bg);
-  border-radius: 6px;
-  font-size: 12px;
-  color: var(--primary-text);
-}
-.chart-wrap { height: 250px; position: relative; }
-
-/* ── Feedback ── */
-.fb-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 28px;
-}
-.fb-tabs-row {
-  display: flex;
-  overflow-x: auto;
-  border-bottom: 1px solid var(--border);
-  padding: 0 22px;
-}
-.fb-tab {
-  padding: 10px 14px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--sans);
-  font-size: 12px;
-  color: var(--text-muted);
-  border-bottom: 2px solid transparent;
-  white-space: nowrap;
-  transition: color .15s, border-color .15s;
-}
-.fb-tab:hover { color: var(--text); }
-.fb-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
-.fb-body { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 18px 22px; }
-.fb-col-lbl {
-  font-size: 10.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .09em;
-  margin-bottom: 10px;
-}
-.fb-col-lbl.good { color: var(--primary); }
-.fb-col-lbl.bad  { color: var(--danger); }
-.fb-col-lbl.fut  { color: var(--mid); }
-.fb-item {
-  font-size: 12.5px;
-  color: var(--text-muted);
-  padding: 6px 0;
-  border-bottom: 1px solid var(--border-light);
-  line-height: 1.5;
-  display: flex;
-  gap: 6px;
-}
-.fb-item:last-child { border-bottom: none; }
-.fb-item::before { content: '—'; color: var(--text-light); flex-shrink: 0; }
-.fb-empty { font-size: 12px; color: var(--text-light); font-style: italic; padding: 6px 0; }
-
-/* ── Insights ── */
-.insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.ins-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; box-shadow: var(--shadow-sm); }
-.ins-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 12px; }
-.ins-title.s { color: var(--primary); }
-.ins-title.i { color: var(--danger); }
-.ins-list { list-style: none; }
-.ins-list li {
-  font-size: 13px;
-  color: var(--text-muted);
-  padding: 6px 0;
-  border-bottom: 1px solid var(--border-light);
-  display: flex;
-  gap: 8px;
-  line-height: 1.5;
-}
-.ins-list li:last-child { border-bottom: none; }
-.ins-list li::before { content: '›'; font-size: 15px; line-height: 1.35; flex-shrink: 0; color: var(--primary); }
-.ins-card:last-child .ins-list li::before { color: var(--danger); }
-
-/* ── Responsive ── */
-@media (max-width: 1024px) {
-  .kpi-row { grid-template-columns: repeat(2, 1fr); }
-  .trend-grid { grid-template-columns: 1fr 1fr; }
-  .bottom-grid { grid-template-columns: 1fr; }
-  .course-card { grid-template-columns: 24px 1fr 80px; }
-  .bars { display: none; }
-  .insights-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 700px) {
-  .page { padding: 16px 14px 60px; }
-  .header { padding: 14px 16px; flex-direction: column; align-items: flex-start; gap: 6px; }
-  .kpi-row { grid-template-columns: 1fr 1fr; }
-  .trend-grid { grid-template-columns: 1fr; }
-  .fb-body { grid-template-columns: 1fr; }
-}
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Noto Sans KR',sans-serif;background:#f0f4f8;color:#1a202c;line-height:1.6;}
+  .header{background:linear-gradient(135deg,#1a365d 0%,#2b6cb0 100%);color:white;padding:28px 40px;display:flex;justify-content:space-between;align-items:center;}
+  .header h1{font-size:22px;font-weight:700;}
+  .header .sub{font-size:13px;opacity:.85;margin-top:4px;}
+  .header .badge{background:rgba(255,255,255,.2);padding:6px 16px;border-radius:20px;font-size:12px;}
+  .container{max-width:1440px;margin:0 auto;padding:20px;}
+  .summary-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;}
+  .sc{background:white;border-radius:12px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.08);text-align:center;position:relative;overflow:hidden;}
+  .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+  .sc:nth-child(1)::before{background:#3182ce;}.sc:nth-child(2)::before{background:#38a169;}.sc:nth-child(3)::before{background:#d69e2e;}.sc:nth-child(4)::before{background:#e53e3e;}.sc:nth-child(5)::before{background:#805ad5;}
+  .sc .lb{font-size:11px;color:#718096;font-weight:500;margin-bottom:6px;}
+  .sc .vl{font-size:30px;font-weight:700;color:#2d3748;}
+  .sc .un{font-size:13px;color:#a0aec0;font-weight:400;}
+  .sc .sb{font-size:10px;color:#a0aec0;margin-top:3px;}
+  .section{background:white;border-radius:12px;padding:22px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .st{font-size:15px;font-weight:600;color:#2d3748;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid #e2e8f0;display:flex;align-items:center;gap:8px;}
+  .st .ic{font-size:18px;}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
+  .cc{background:#f7fafc;border-radius:10px;padding:14px 18px;border:1px solid #e2e8f0;transition:transform .2s;}
+  .cc:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1);}
+  .cc .cn{font-size:12px;font-weight:600;color:#2d3748;line-height:1.4;}
+  .cc .sr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .cc .sl{font-size:11px;color:#718096;}
+  .cc .bs{font-size:26px;font-weight:700;margin:0;}
+  .pb{height:7px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:4px;}
+  .pb .fl{height:100%;border-radius:4px;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:#f7fafc;padding:8px 10px;text-align:left;font-size:11px;font-weight:600;color:#4a5568;border-bottom:2px solid #e2e8f0;}
+  td{padding:7px 10px;font-size:11px;border-bottom:1px solid #f0f0f0;color:#4a5568;}
+  tr:hover td{background:#f7fafc;}
+  .badge-h{display:inline-block;padding:2px 8px;border-radius:12px;font-weight:600;font-size:11px;background:#c6f6d5;color:#22543d;}
+  .badge-m{display:inline-block;padding:2px 8px;border-radius:12px;font-weight:600;font-size:11px;background:#fefcbf;color:#744210;}
+  .badge-l{display:inline-block;padding:2px 8px;border-radius:12px;font-weight:600;font-size:11px;background:#fed7d7;color:#822727;}
+  .fc{background:#f7fafc;border-left:3px solid #3182ce;padding:9px 13px;margin-bottom:7px;border-radius:0 8px 8px 0;font-size:12px;}
+  .fc .mt{font-size:10px;color:#a0aec0;margin-bottom:2px;}
+  .fc .tx{color:#4a5568;line-height:1.5;}
+  .ch{position:relative;height:300px;}
+  .note{background:#edf7ed;border:1px solid #9ae6b4;border-radius:8px;padding:10px 14px;font-size:11px;color:#276749;margin-bottom:18px;}
+  .round-tab{display:inline-flex;gap:4px;background:#edf2f7;border-radius:8px;padding:3px;}
+  .round-tab button{padding:5px 14px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-size:11px;font-family:'Noto Sans KR',sans-serif;color:#4a5568;transition:.2s;}
+  .round-tab button.active{background:white;color:#2d3748;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.1);}
+  .change-up{color:#38a169;font-weight:600;}
+  .change-down{color:#e53e3e;font-weight:600;}
+  @media(max-width:1100px){.summary-row{grid-template-columns:repeat(3,1fr);}.g2,.g3{grid-template-columns:1fr;}}
+  @media(max-width:700px){.summary-row{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
+<div class="header">
+  <div><h1>MetLife 오프라인 교육 만족도 대시보드</h1><div class="sub">2026년 3~4월 리더스 아카데미 교육 과정 설문 분석 결과</div></div>
+  <div class="badge">조사기간: 2026.03.04 ~ 2026.04.27</div>
+</div>
+<div class="container">
+  <div class="note">※ 테스트/관리자 데이터(서정용, 검수용01, 조현성, 0test1)를 제외한 실제 학습자 응답만 분석. 동일 과정명은 통합 만족도 + 차수별 비교로 구분.</div>
 
-<header class="header">
-  <div class="header-left">
-    <div class="header-logo">MetLife</div>
-    <div>
-      <div class="header-title">2026 리더스 아카데미 교육만족도 분석</div>
-      <div class="header-sub">오프라인 교육 과정 설문 분석 · 테스트/관리자 응답 제외</div>
-    </div>
-  </div>
-  <div class="header-date">2026.03.04 — 2026.04.20</div>
-</header>
-
-<div class="page">
-
-  <div class="notice">※ 테스트/관리자 데이터(서정용, 검수용01, 조현성, 0test1)를 제외한 실제 학습자 응답만 분석. 동일 과정명은 통합 만족도 + 차수별 비교로 구분.</div>
-
-  <!-- KPI -->
-  <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="kpi-label">전체 평균 만족도</div>
-      <div class="kpi-val green">4.73<span class="unit">/5</span></div>
-      <div class="kpi-sub">5점 만점 기준 · 931건 응답</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">총 응답자</div>
-      <div class="kpi-val">133<span class="unit">명</span></div>
-      <div class="kpi-sub">테스트/관리자 제외</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">분석 과정 수</div>
-      <div class="kpi-val">5<span class="unit">개</span></div>
-      <div class="kpi-sub">7차수 운영</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">최고 만족도 과정</div>
-      <div class="kpi-name">Smart Writing</div>
-      <div class="kpi-sub">통합 평균 4.88점</div>
-    </div>
+  <!-- Summary -->
+  <div class="summary-row">
+    <div class="sc"><div class="lb">분석 과정 수</div><div class="vl">5<span class="un">개</span></div><div class="sb">9차수 (SW·원페이지·AI·엑셀·워크플로우)</div></div>
+    <div class="sc"><div class="lb">총 응답자 수</div><div class="vl">168<span class="un">명</span></div><div class="sb">테스트/관리자 제외</div></div>
+    <div class="sc"><div class="lb">전체 평균 만족도</div><div class="vl">4.74<span class="un">/5</span></div><div class="sb">5점 만점 기준</div></div>
+    <div class="sc"><div class="lb">최고 만족도 과정</div><div class="vl" style="font-size:14px;">Smart Writing</div><div class="sb">통합 평균 4.88점</div></div>
+    <div class="sc"><div class="lb">총 만족도 응답</div><div class="vl">1,176<span class="un">건</span></div><div class="sb">7문항 × 응답자</div></div>
   </div>
 
-  <!-- Course Ranking -->
-  <div class="sec-label">과정별 종합 만족도</div>
-  <div class="courses">
-
-    <div class="course-card">
-      <div class="c-rank">#1</div>
+  <!-- Course Overview -->
+  <div class="section">
+    <div class="st"><span class="ic">📊</span> 과정별 종합 만족도 (통합)</div>
+    <div class="g2">
+      <div><div class="ch"><canvas id="courseOverviewChart"></canvas></div></div>
       <div>
-        <div class="c-name">한 번에 이해되는 글쓰기 (Smart Writing)</div>
-        <div class="c-meta">응답 33명 (1차 14 + 2차 19) · 강사 박혁종</div>
+        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">1위 &nbsp;[Smart Writing] 한 번에 이해되는 글쓰기 <span style="font-size:10px;color:#718096;">(1차+2차)</span></div><div class="bs" style="color:#3182ce;">4.88</div></div><div class="sr"><div class="sl">응답자 33명 (1차 14명 + 2차 19명)</div></div><div class="pb"><div class="fl" style="width:97.6%;background:#3182ce;"></div></div></div>
+        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">2위 &nbsp;원페이지 기획의 기술 - 상대를 움직이는 설득 전략 <span style="font-size:10px;color:#718096;">(1차+2차)</span></div><div class="bs" style="color:#38a169;">4.86</div></div><div class="sr"><div class="sl">응답자 26명 (1차 8명 + 2차 18명)</div></div><div class="pb"><div class="fl" style="width:97.2%;background:#38a169;"></div></div></div>
+        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">3위 &nbsp;나만의 엑셀 비서 만들기 - 엑셀 업무 효율화 <span style="font-size:10px;color:#718096;">(1차+2차)</span></div><div class="bs" style="color:#d69e2e;">4.71</div></div><div class="sr"><div class="sl">응답자 33명 (1차 15명 + 2차 18명)</div></div><div class="pb"><div class="fl" style="width:94.2%;background:#d69e2e;"></div></div></div>
+        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">4위 &nbsp;워크플로우 리부트 - 일하는 방식 재설계 <span style="font-size:10px;color:#718096;">(1차+2차)</span></div><div class="bs" style="color:#e53e3e;">4.68</div></div><div class="sr"><div class="sl">응답자 34명 (1차 17명 + 2차 17명)</div></div><div class="pb"><div class="fl" style="width:93.6%;background:#e53e3e;"></div></div></div>
+        <div class="cc"><div class="sr"><div class="cn">5위 &nbsp;AI로 끝내는 데이터 정리 - 반복 작업 3초 해결 <span style="font-size:10px;color:#718096;">(1차+2차)</span></div><div class="bs" style="color:#805ad5;">4.65</div></div><div class="sr"><div class="sl">응답자 42명 (1차 14명 + 2차 28명)</div></div><div class="pb"><div class="fl" style="width:93.0%;background:#805ad5;"></div></div></div>
       </div>
-      <div class="c-score g">4.88<span class="max">/5</span></div>
-      <div class="bars">
-        <div class="bar-row"><span class="lbl">교육</span><div class="bar-bg"><div class="bar-fill" style="width:97.6%"></div></div><span class="val">4.88</span></div>
-        <div class="bar-row"><span class="lbl">현업</span><div class="bar-bg"><div class="bar-fill" style="width:97.6%"></div></div><span class="val">4.88</span></div>
-        <div class="bar-row"><span class="lbl">강사</span><div class="bar-bg"><div class="bar-fill" style="width:97.8%"></div></div><span class="val">4.89</span></div>
-        <div class="bar-row"><span class="lbl">운영</span><div class="bar-bg"><div class="bar-fill" style="width:97.2%"></div></div><span class="val">4.86</span></div>
-      </div>
-    </div>
-
-    <div class="course-card">
-      <div class="c-rank">#2</div>
-      <div>
-        <div class="c-name">상대를 움직이는 설득 전략 (원페이지 기획)</div>
-        <div class="c-meta">응답 26명 (1차 8 + 2차 18) · 강사 박혁종</div>
-      </div>
-      <div class="c-score g">4.86<span class="max">/5</span></div>
-      <div class="bars">
-        <div class="bar-row"><span class="lbl">교육</span><div class="bar-bg"><div class="bar-fill" style="width:96.2%"></div></div><span class="val">4.81</span></div>
-        <div class="bar-row"><span class="lbl">현업</span><div class="bar-bg"><div class="bar-fill" style="width:97%"></div></div><span class="val">4.85</span></div>
-        <div class="bar-row"><span class="lbl">강사</span><div class="bar-bg"><div class="bar-fill" style="width:97%"></div></div><span class="val">4.85</span></div>
-        <div class="bar-row"><span class="lbl">운영</span><div class="bar-bg"><div class="bar-fill" style="width:98.4%"></div></div><span class="val">4.92</span></div>
-      </div>
-    </div>
-
-    <div class="course-card">
-      <div class="c-rank">#3</div>
-      <div>
-        <div class="c-name">나만의 엑셀 비서 만들기</div>
-        <div class="c-meta">응답 15명 (단일 차수) · 강사 윤재현</div>
-      </div>
-      <div class="c-score g">4.66<span class="max">/5</span></div>
-      <div class="bars">
-        <div class="bar-row"><span class="lbl">교육</span><div class="bar-bg"><div class="bar-fill" style="width:92%"></div></div><span class="val">4.60</span></div>
-        <div class="bar-row"><span class="lbl">현업</span><div class="bar-bg"><div class="bar-fill" style="width:89.4%"></div></div><span class="val">4.47</span></div>
-        <div class="bar-row"><span class="lbl">강사</span><div class="bar-bg"><div class="bar-fill" style="width:94.6%"></div></div><span class="val">4.73</span></div>
-        <div class="bar-row"><span class="lbl">운영</span><div class="bar-bg"><div class="bar-fill" style="width:94.6%"></div></div><span class="val">4.73</span></div>
-      </div>
-    </div>
-
-    <div class="course-card">
-      <div class="c-rank">#4</div>
-      <div>
-        <div class="c-name">반복 작업 3초 해결 (AI 데이터 정리)</div>
-        <div class="c-meta">응답 42명 (1차 14 + 2차 28) · 강사 윤재현</div>
-      </div>
-      <div class="c-score b">4.65<span class="max">/5</span></div>
-      <div class="bars">
-        <div class="bar-row"><span class="lbl">교육</span><div class="bar-bg"><div class="bar-fill b" style="width:91.4%"></div></div><span class="val">4.57</span></div>
-        <div class="bar-row"><span class="lbl">현업</span><div class="bar-bg"><div class="bar-fill b" style="width:91%"></div></div><span class="val">4.55</span></div>
-        <div class="bar-row"><span class="lbl">강사</span><div class="bar-bg"><div class="bar-fill b" style="width:92.6%"></div></div><span class="val">4.63</span></div>
-        <div class="bar-row"><span class="lbl">운영</span><div class="bar-bg"><div class="bar-fill b" style="width:95.4%"></div></div><span class="val">4.77</span></div>
-      </div>
-    </div>
-
-    <div class="course-card">
-      <div class="c-rank">#5</div>
-      <div>
-        <div class="c-name">일하는 방식 재설계 (워크플로우 리부트)</div>
-        <div class="c-meta">응답 17명 (단일 차수)</div>
-      </div>
-      <div class="c-score w">4.52<span class="max">/5</span></div>
-      <div class="bars">
-        <div class="bar-row"><span class="lbl">교육</span><div class="bar-bg"><div class="bar-fill w" style="width:88.8%"></div></div><span class="val">4.44</span></div>
-        <div class="bar-row"><span class="lbl">현업</span><div class="bar-bg"><div class="bar-fill w" style="width:83.6%"></div></div><span class="val">4.18</span></div>
-        <div class="bar-row"><span class="lbl">강사</span><div class="bar-bg"><div class="bar-fill w" style="width:91.2%"></div></div><span class="val">4.56</span></div>
-        <div class="bar-row"><span class="lbl">운영</span><div class="bar-bg"><div class="bar-fill w" style="width:94.8%"></div></div><span class="val">4.74</span></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Dimension Table -->
-  <div class="sec-label">4영역별 비교</div>
-  <div class="dim-wrap">
-    <table class="dim-table">
-      <thead>
-        <tr>
-          <th style="width:30%">과정</th>
-          <th>교육 만족</th>
-          <th>현업 적용</th>
-          <th>강사 만족</th>
-          <th>운영 만족</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Smart Writing</strong> <span style="font-size:11px;color:var(--text-muted);font-weight:400">(통합)</span></td>
-          <td><span class="chip h">4.88</span></td>
-          <td><span class="chip h">4.88</span></td>
-          <td><span class="chip h">4.89</span></td>
-          <td><span class="chip h">4.86</span></td>
-        </tr>
-        <tr>
-          <td><strong>원페이지 기획</strong> <span style="font-size:11px;color:var(--text-muted);font-weight:400">(통합)</span></td>
-          <td><span class="chip h">4.81</span></td>
-          <td><span class="chip h">4.85</span></td>
-          <td><span class="chip h">4.85</span></td>
-          <td><span class="chip h">4.92</span></td>
-        </tr>
-        <tr>
-          <td><strong>엑셀 비서 만들기</strong></td>
-          <td><span class="chip m">4.60</span></td>
-          <td><span class="chip w">4.47</span></td>
-          <td><span class="chip m">4.73</span></td>
-          <td><span class="chip m">4.73</span></td>
-        </tr>
-        <tr>
-          <td><strong>AI 데이터 정리</strong> <span style="font-size:11px;color:var(--text-muted);font-weight:400">(통합)</span></td>
-          <td><span class="chip m">4.57</span></td>
-          <td><span class="chip m">4.55</span></td>
-          <td><span class="chip m">4.63</span></td>
-          <td><span class="chip m">4.77</span></td>
-        </tr>
-        <tr>
-          <td><strong>워크플로우 리부트</strong></td>
-          <td><span class="chip w">4.44</span></td>
-          <td><span class="chip w">4.18</span></td>
-          <td><span class="chip m">4.56</span></td>
-          <td><span class="chip m">4.74</span></td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td>전체 평균</td>
-          <td><span class="chip m">4.66</span></td>
-          <td><span class="chip m">4.58</span></td>
-          <td><span class="chip m">4.73</span></td>
-          <td><span class="chip h">4.80</span></td>
-        </tr>
-      </tfoot>
-    </table>
-    <div class="dim-note">
-      <strong>핵심:</strong> 전 과정에서 <strong style="color:var(--primary)">운영 만족도</strong>가 가장 높고, <strong style="color:var(--danger)">현업 적용도</strong>가 가장 낮음. 워크플로우 리부트 현업 적용도(4.18)가 유일하게 4.2 미만.
     </div>
   </div>
 
-  <!-- Trend -->
-  <div class="sec-label">차수별 변화 추이</div>
-  <div class="trend-grid">
-
-    <div class="trend-card">
-      <div class="trend-head">
-        <div class="trend-course">Smart Writing</div>
-        <div class="trend-rounds">1차 (3/9, 14명) → 2차 (4/7, 19명)</div>
+  <!-- Category Analysis -->
+  <div class="section">
+    <div class="st"><span class="ic">📋</span> 영역별 만족도 비교 (통합 5개 과정)</div>
+    <div class="g2">
+      <div class="ch" style="height:360px;"><canvas id="categoryRadarChart"></canvas></div>
+      <div>
+        <table>
+          <thead><tr><th>과정명</th><th style="text-align:center;">교육</th><th style="text-align:center;">현업적용</th><th style="text-align:center;">강사</th><th style="text-align:center;">운영</th></tr></thead>
+          <tbody>
+            <tr><td>Smart Writing (통합)</td><td style="text-align:center;"><span class="badge-h">4.88</span></td><td style="text-align:center;"><span class="badge-h">4.88</span></td><td style="text-align:center;"><span class="badge-h">4.89</span></td><td style="text-align:center;"><span class="badge-h">4.86</span></td></tr>
+            <tr><td>원페이지 기획 (통합)</td><td style="text-align:center;"><span class="badge-h">4.81</span></td><td style="text-align:center;"><span class="badge-h">4.85</span></td><td style="text-align:center;"><span class="badge-h">4.85</span></td><td style="text-align:center;"><span class="badge-h">4.92</span></td></tr>
+            <tr><td>엑셀 비서 만들기 (통합)</td><td style="text-align:center;"><span class="badge-m">4.65</span></td><td style="text-align:center;"><span class="badge-m">4.58</span></td><td style="text-align:center;"><span class="badge-h">4.77</span></td><td style="text-align:center;"><span class="badge-h">4.77</span></td></tr>
+            <tr><td>AI 데이터 정리 (통합)</td><td style="text-align:center;"><span class="badge-m">4.57</span></td><td style="text-align:center;"><span class="badge-m">4.55</span></td><td style="text-align:center;"><span class="badge-m">4.63</span></td><td style="text-align:center;"><span class="badge-h">4.77</span></td></tr>
+            <tr><td>워크플로우 리부트 (통합)</td><td style="text-align:center;"><span class="badge-m">4.65</span></td><td style="text-align:center;"><span class="badge-m">4.45</span></td><td style="text-align:center;"><span class="badge-m">4.69</span></td><td style="text-align:center;"><span class="badge-h">4.83</span></td></tr>
+            <tr style="background:#f7fafc;font-weight:600;"><td>전체 평균</td><td style="text-align:center;">4.70</td><td style="text-align:center;">4.65</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.82</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:10px 12px;background:#f7fafc;border-radius:8px;font-size:11px;color:#4a5568;">
+          <strong>핵심:</strong> 전 과정 <span style="color:#38a169;font-weight:600;">운영 만족도</span>가 가장 높고, <span style="color:#e53e3e;font-weight:600;">현업 적용도</span>가 상대적으로 가장 낮음
+        </div>
       </div>
-      <div class="trend-body">
-        <div class="trend-row"><div class="t-dim">전체 평균</div><div class="t-scores"><span>4.81</span><span class="t-arrow">→</span><span>4.93</span></div><div class="t-delta up">+0.12 ↑</div></div>
-        <div class="trend-row"><div class="t-dim">교육 만족</div><div class="t-scores"><span>4.79</span><span class="t-arrow">→</span><span>4.95</span></div><div class="t-delta up">+0.16 ↑</div></div>
-        <div class="trend-row"><div class="t-dim">현업 적용</div><div class="t-scores"><span>4.86</span><span class="t-arrow">→</span><span>4.89</span></div><div class="t-delta up">+0.03 ↑</div></div>
-        <div class="trend-row"><div class="t-dim">강사 만족</div><div class="t-scores"><span>4.86</span><span class="t-arrow">→</span><span>4.92</span></div><div class="t-delta up">+0.06 ↑</div></div>
-        <div class="trend-row"><div class="t-dim">운영 만족</div><div class="t-scores"><span>4.75</span><span class="t-arrow">→</span><span>4.95</span></div><div class="t-delta up">+0.20 ↑</div></div>
-      </div>
-    </div>
-
-    <div class="trend-card">
-      <div class="trend-head">
-        <div class="trend-course">원페이지 기획</div>
-        <div class="trend-rounds">1차 (3/18, 8명) → 2차 (4/20, 18명)</div>
-      </div>
-      <div class="trend-body">
-        <div class="trend-row"><div class="t-dim">전체 평균</div><div class="t-scores"><span>4.89</span><span class="t-arrow">→</span><span>4.84</span></div><div class="t-delta dn">-0.05 ↓</div></div>
-        <div class="trend-row"><div class="t-dim">교육 만족</div><div class="t-scores"><span>4.81</span><span class="t-arrow">→</span><span>4.81</span></div><div class="t-delta fl">0.00</div></div>
-        <div class="trend-row"><div class="t-dim">현업 적용</div><div class="t-scores"><span>4.88</span><span class="t-arrow">→</span><span>4.83</span></div><div class="t-delta dn">-0.05 ↓</div></div>
-        <div class="trend-row"><div class="t-dim">강사 만족</div><div class="t-scores"><span>4.88</span><span class="t-arrow">→</span><span>4.83</span></div><div class="t-delta dn">-0.05 ↓</div></div>
-        <div class="trend-row"><div class="t-dim">운영 만족</div><div class="t-scores"><span>5.00</span><span class="t-arrow">→</span><span>4.89</span></div><div class="t-delta dn">-0.11 ↓</div></div>
-      </div>
-    </div>
-
-    <div class="trend-card">
-      <div class="trend-head">
-        <div class="trend-course">AI 데이터 정리 <span style="color:var(--primary);font-size:11px">최대 개선</span></div>
-        <div class="trend-rounds">1차 (3/4, 14명) → 2차 (4/20, 28명)</div>
-      </div>
-      <div class="trend-body">
-        <div class="trend-row"><div class="t-dim">전체 평균</div><div class="t-scores"><span>4.36</span><span class="t-arrow">→</span><span>4.79</span></div><div class="t-delta up">+0.43 ↑</div></div>
-        <div class="trend-row"><div class="t-dim">교육 만족</div><div class="t-scores"><span>4.32</span><span class="t-arrow">→</span><span>4.70</span></div><div class="t-delta up">+0.38 ↑</div></div>
-        <div class="trend-row"><div class="t-dim">현업 적용</div><div class="t-scores"><span>4.14</span><span class="t-arrow">→</span><span>4.75</span></div><div class="t-delta up">+0.61 ↑</div></div>
-        <div class="trend-row"><div class="t-dim">강사 만족</div><div class="t-scores"><span>4.32</span><span class="t-arrow">→</span><span>4.79</span></div><div class="t-delta up">+0.47 ↑</div></div>
-        <div class="trend-row"><div class="t-dim">운영 만족</div><div class="t-scores"><span>4.54</span><span class="t-arrow">→</span><span>4.89</span></div><div class="t-delta up">+0.35 ↑</div></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Distribution + Chart -->
-  <div class="sec-label">점수 분포 및 문항별 분석</div>
-  <div class="bottom-grid">
-    <div class="card">
-      <div class="sec-label" style="margin-bottom:10px">점수 분포 (전체 931건)</div>
-      <div class="dist-rows">
-        <div class="dist-row"><span class="d-lbl">5점</span><div class="d-bg"><div class="d-fill" style="width:79.2%;background:#00875A"></div></div><span class="d-cnt">737건</span><span class="d-pct">79.2%</span></div>
-        <div class="dist-row"><span class="d-lbl">4점</span><div class="d-bg"><div class="d-fill" style="width:15.9%;background:#1D4ED8"></div></div><span class="d-cnt">148건</span><span class="d-pct">15.9%</span></div>
-        <div class="dist-row"><span class="d-lbl">3점</span><div class="d-bg"><div class="d-fill" style="width:3.9%;background:#F59E0B"></div></div><span class="d-cnt">36건</span><span class="d-pct">3.9%</span></div>
-        <div class="dist-row"><span class="d-lbl">2점</span><div class="d-bg"><div class="d-fill" style="width:0.9%;background:#EF4444"></div></div><span class="d-cnt">8건</span><span class="d-pct">0.9%</span></div>
-        <div class="dist-row"><span class="d-lbl">1점</span><div class="d-bg"><div class="d-fill" style="width:0.2%;background:#991B1B"></div></div><span class="d-cnt">2건</span><span class="d-pct">0.2%</span></div>
-      </div>
-      <div class="dist-summary">4점 이상 긍정 응답 <strong>95.1%</strong> · 5점 비율 <strong>79.2%</strong></div>
-    </div>
-    <div class="card">
-      <div class="sec-label" style="margin-bottom:12px">문항별 상세 (5개 과정 비교)</div>
-      <div class="chart-wrap"><canvas id="qChart"></canvas></div>
     </div>
   </div>
 
-  <!-- Feedback -->
-  <div class="sec-label">주관식 응답</div>
-  <div class="fb-card">
-    <div class="fb-tabs-row" id="fbTabs"></div>
-    <div class="fb-body">
-      <div><div class="fb-col-lbl good">가장 유익했던 내용</div><div id="fb-good"></div></div>
-      <div><div class="fb-col-lbl bad">아쉬웠던 점 / 개선사항</div><div id="fb-improve"></div></div>
-      <div><div class="fb-col-lbl fut">향후 희망 교육 주제</div><div id="fb-future"></div></div>
+  <!-- Smart Writing 차수별 비교 -->
+  <div class="section">
+    <div class="st"><span class="ic">🔄</span> [Smart Writing] 한 번에 이해되는 글쓰기 — 차수별 비교</div>
+    <div class="g2">
+      <div class="ch"><canvas id="swCompareChart"></canvas></div>
+      <div>
+        <table>
+          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/9)</th><th style="text-align:center;">2차 (4/7)</th><th style="text-align:center;">통합</th><th style="text-align:center;">변화</th></tr></thead>
+          <tbody>
+            <tr><td>응답자</td><td style="text-align:center;">14명</td><td style="text-align:center;">19명</td><td style="text-align:center;">33명</td><td style="text-align:center;"><span class="change-up">+5명</span></td></tr>
+            <tr><td>전체 평균</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.93</td><td style="text-align:center;">4.88</td><td style="text-align:center;"><span class="change-up">+0.12</span></td></tr>
+            <tr><td>교육 만족</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.88</td><td style="text-align:center;"><span class="change-up">+0.16</span></td></tr>
+            <tr><td>현업 적용</td><td style="text-align:center;">4.86</td><td style="text-align:center;">4.89</td><td style="text-align:center;">4.88</td><td style="text-align:center;"><span class="change-up">+0.03</span></td></tr>
+            <tr><td>강사 만족</td><td style="text-align:center;">4.86</td><td style="text-align:center;">4.92</td><td style="text-align:center;">4.89</td><td style="text-align:center;"><span class="change-up">+0.06</span></td></tr>
+            <tr><td>운영 만족</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.86</td><td style="text-align:center;"><span class="change-up">+0.20</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:10px 12px;background:#edf7ed;border-radius:8px;font-size:11px;color:#276749;">
+          <strong>분석:</strong> 2차에서 전 영역 상승. 특히 <strong>운영 만족도(+0.20)</strong>와 <strong>교육 만족(+0.16)</strong>이 크게 개선.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 원페이지 기획 차수별 비교 -->
+  <div class="section">
+    <div class="st"><span class="ic">🔄</span> 원페이지 기획의 기술 — 차수별 비교</div>
+    <div class="g2">
+      <div class="ch"><canvas id="opCompareChart"></canvas></div>
+      <div>
+        <table>
+          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/18)</th><th style="text-align:center;">2차 (4/20)</th><th style="text-align:center;">통합</th><th style="text-align:center;">변화</th></tr></thead>
+          <tbody>
+            <tr><td>응답자</td><td style="text-align:center;">8명</td><td style="text-align:center;">18명</td><td style="text-align:center;">26명</td><td style="text-align:center;"><span class="change-up">+10명</span></td></tr>
+            <tr><td>전체 평균</td><td style="text-align:center;">4.89</td><td style="text-align:center;">4.84</td><td style="text-align:center;">4.86</td><td style="text-align:center;"><span class="change-down">-0.05</span></td></tr>
+            <tr><td>교육 만족</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.81</td><td style="text-align:center;">0.00</td></tr>
+            <tr><td>현업 적용</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.83</td><td style="text-align:center;">4.85</td><td style="text-align:center;"><span class="change-down">-0.05</span></td></tr>
+            <tr><td>강사 만족</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.83</td><td style="text-align:center;">4.85</td><td style="text-align:center;"><span class="change-down">-0.05</span></td></tr>
+            <tr><td>운영 만족</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.89</td><td style="text-align:center;">4.92</td><td style="text-align:center;"><span class="change-down">-0.11</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:10px 12px;background:#f7fafc;border-radius:8px;font-size:11px;color:#4a5568;">
+          <strong>분석:</strong> 1차 대비 소폭 하락했으나 두 차수 모두 높은 수준(4.8 이상) 유지. 응답자 2배 이상 증가로 신뢰도 향상.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI 데이터 정리 차수별 비교 -->
+  <div class="section">
+    <div class="st"><span class="ic">🔄</span> AI로 끝내는 데이터 정리 — 차수별 비교</div>
+    <div class="g2">
+      <div class="ch"><canvas id="aiCompareChart"></canvas></div>
+      <div>
+        <table>
+          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/4)</th><th style="text-align:center;">2차 (4/20)</th><th style="text-align:center;">통합</th><th style="text-align:center;">변화</th></tr></thead>
+          <tbody>
+            <tr><td>응답자</td><td style="text-align:center;">14명</td><td style="text-align:center;">28명</td><td style="text-align:center;">42명</td><td style="text-align:center;"><span class="change-up">+14명</span></td></tr>
+            <tr><td>전체 평균</td><td style="text-align:center;">4.36</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.65</td><td style="text-align:center;"><span class="change-up">+0.43</span></td></tr>
+            <tr><td>교육 만족</td><td style="text-align:center;">4.32</td><td style="text-align:center;">4.70</td><td style="text-align:center;">4.57</td><td style="text-align:center;"><span class="change-up">+0.38</span></td></tr>
+            <tr><td>현업 적용</td><td style="text-align:center;">4.14</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.55</td><td style="text-align:center;"><span class="change-up">+0.61</span></td></tr>
+            <tr><td>강사 만족</td><td style="text-align:center;">4.32</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.63</td><td style="text-align:center;"><span class="change-up">+0.47</span></td></tr>
+            <tr><td>운영 만족</td><td style="text-align:center;">4.54</td><td style="text-align:center;">4.89</td><td style="text-align:center;">4.77</td><td style="text-align:center;"><span class="change-up">+0.35</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:10px 12px;background:#edf7ed;border-radius:8px;font-size:11px;color:#276749;">
+          <strong>분석:</strong> 2차에서 <strong>전 영역 대폭 상승(+0.43)</strong>. 특히 <strong>현업 적용도(+0.61)</strong>가 가장 크게 개선되어 과정 내용 개선 효과 확인.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 엑셀 비서 차수별 비교 -->
+  <div class="section">
+    <div class="st"><span class="ic">🔄</span> 나만의 엑셀 비서 만들기 — 차수별 비교</div>
+    <div class="g2">
+      <div class="ch"><canvas id="excelCompareChart"></canvas></div>
+      <div>
+        <table>
+          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/11)</th><th style="text-align:center;">2차 (4/27)</th><th style="text-align:center;">통합</th><th style="text-align:center;">변화</th></tr></thead>
+          <tbody>
+            <tr><td>응답자</td><td style="text-align:center;">15명</td><td style="text-align:center;">18명</td><td style="text-align:center;">33명</td><td style="text-align:center;"><span class="change-up">+3명</span></td></tr>
+            <tr><td>전체 평균</td><td style="text-align:center;">4.66</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.71</td><td style="text-align:center;"><span class="change-up">+0.09</span></td></tr>
+            <tr><td>교육 만족</td><td style="text-align:center;">4.60</td><td style="text-align:center;">4.69</td><td style="text-align:center;">4.65</td><td style="text-align:center;"><span class="change-up">+0.09</span></td></tr>
+            <tr><td>현업 적용</td><td style="text-align:center;">4.47</td><td style="text-align:center;">4.67</td><td style="text-align:center;">4.58</td><td style="text-align:center;"><span class="change-up">+0.20</span></td></tr>
+            <tr><td>강사 만족</td><td style="text-align:center;">4.73</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.77</td><td style="text-align:center;"><span class="change-up">+0.08</span></td></tr>
+            <tr><td>운영 만족</td><td style="text-align:center;">4.73</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.77</td><td style="text-align:center;"><span class="change-up">+0.08</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:10px 12px;background:#edf7ed;border-radius:8px;font-size:11px;color:#276749;">
+          <strong>분석:</strong> 2차에서 전 영역 상승. 특히 <strong>현업 적용도(+0.20)</strong>가 가장 크게 개선. VBA·AI 실습 중심 커리큘럼에 대한 학습자 호응 지속.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 워크플로우 차수별 비교 -->
+  <div class="section">
+    <div class="st"><span class="ic">🔄</span> 워크플로우 리부트 — 차수별 비교</div>
+    <div class="g2">
+      <div class="ch"><canvas id="workflowCompareChart"></canvas></div>
+      <div>
+        <table>
+          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/18)</th><th style="text-align:center;">2차 (4/27)</th><th style="text-align:center;">통합</th><th style="text-align:center;">변화</th></tr></thead>
+          <tbody>
+            <tr><td>응답자</td><td style="text-align:center;">17명</td><td style="text-align:center;">17명</td><td style="text-align:center;">34명</td><td style="text-align:center;">0명</td></tr>
+            <tr><td>전체 평균</td><td style="text-align:center;">4.52</td><td style="text-align:center;">4.84</td><td style="text-align:center;">4.68</td><td style="text-align:center;"><span class="change-up">+0.32</span></td></tr>
+            <tr><td>교육 만족</td><td style="text-align:center;">4.44</td><td style="text-align:center;">4.85</td><td style="text-align:center;">4.65</td><td style="text-align:center;"><span class="change-up">+0.41</span></td></tr>
+            <tr><td>현업 적용</td><td style="text-align:center;">4.18</td><td style="text-align:center;">4.71</td><td style="text-align:center;">4.45</td><td style="text-align:center;"><span class="change-up">+0.53</span></td></tr>
+            <tr><td>강사 만족</td><td style="text-align:center;">4.56</td><td style="text-align:center;">4.82</td><td style="text-align:center;">4.69</td><td style="text-align:center;"><span class="change-up">+0.26</span></td></tr>
+            <tr><td>운영 만족</td><td style="text-align:center;">4.74</td><td style="text-align:center;">4.91</td><td style="text-align:center;">4.83</td><td style="text-align:center;"><span class="change-up">+0.17</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:10px 12px;background:#edf7ed;border-radius:8px;font-size:11px;color:#276749;">
+          <strong>분석:</strong> 2차에서 <strong>전 영역 대폭 상승(+0.32)</strong>. 특히 <strong>현업 적용도(+0.53)</strong>와 <strong>교육 만족(+0.41)</strong>이 크게 개선. AI·Copilot 실무 활용 수요 반영 효과.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question Detail -->
+  <div class="section">
+    <div class="st"><span class="ic">🔍</span> 문항별 상세 분석</div>
+    <div class="ch" style="height:380px;"><canvas id="questionDetailChart"></canvas></div>
+  </div>
+
+  <!-- Score Distribution -->
+  <div class="section">
+    <div class="st"><span class="ic">📈</span> 점수 분포 (전체 1,176건)</div>
+    <div class="g2">
+      <div class="ch"><canvas id="distributionChart"></canvas></div>
+      <div>
+        <table>
+          <thead><tr><th>점수</th><th style="text-align:center;">응답 수</th><th style="text-align:center;">비율</th><th>그래프</th></tr></thead>
+          <tbody id="distTable"></tbody>
+        </table>
+        <div style="margin-top:14px;padding:10px 12px;background:#f7fafc;border-radius:8px;font-size:11px;color:#4a5568;">
+          <strong>요약:</strong> 전체 <span style="color:#38a169;font-weight:600;">95.2%</span>가 4점 이상 긍정 응답. 5점 비율 79.7%.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subjective -->
+  <div class="section">
+    <div class="st"><span class="ic">💬</span> 주관식 응답 (과정별)</div>
+    <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;" id="fbTabs"></div>
+    <div class="g3" id="fbArea">
+      <div><h4 style="font-size:13px;font-weight:600;color:#38a169;margin-bottom:10px;">가장 유익했던 내용</h4><div id="fb-good"></div></div>
+      <div><h4 style="font-size:13px;font-weight:600;color:#e53e3e;margin-bottom:10px;">아쉬웠던 점 / 개선사항</h4><div id="fb-improve"></div></div>
+      <div><h4 style="font-size:13px;font-weight:600;color:#805ad5;margin-bottom:10px;">향후 희망 교육 주제</h4><div id="fb-future"></div></div>
     </div>
   </div>
 
   <!-- Insights -->
-  <div class="sec-label">핵심 인사이트</div>
-  <div class="insights-grid">
-    <div class="ins-card">
-      <div class="ins-title s">강점 (Strengths)</div>
-      <ul class="ins-list">
-        <li>전체 평균 <strong>4.73점/5점</strong>, 133명 응답으로 높은 만족도 유지</li>
-        <li>AI 데이터 정리 2차 <strong>+0.43점</strong> 대폭 상승 → 과정 개선 효과 최대</li>
-        <li>Smart Writing 2차도 전 영역 상승 → 지속적 품질 향상</li>
-        <li>전 과정에서 <strong>운영 만족도</strong>가 가장 높음 → 운영 체계 우수</li>
-        <li>실습 위주 + AI 활용 연계에 대한 학습자 호응 높음</li>
-      </ul>
-    </div>
-    <div class="ins-card">
-      <div class="ins-title i">개선 포인트 (Improvements)</div>
-      <ul class="ins-list">
-        <li>워크플로우 리부트 <strong>4.52점</strong> 최저 → 실무 접목 강화 필요</li>
-        <li>전 과정 <strong>현업 적용도</strong>가 가장 낮은 영역 → 실무 사례 확대</li>
-        <li>학습자 수준 차이 → <strong>난이도 분반</strong> 검토 (AI·엑셀 과정)</li>
-        <li>일부 과정 <strong>교육 시간 부족</strong> 피드백 → 시간 확대 또는 핵심 집중</li>
-        <li><strong>AI 심화 교육</strong>(프롬프트, AI 에이전트) 수요 매우 높음</li>
-      </ul>
+  <div class="section">
+    <div class="st"><span class="ic">💡</span> 핵심 인사이트 및 제언</div>
+    <div class="g2">
+      <div class="cc">
+        <div class="cn" style="color:#38a169;font-size:13px;margin-bottom:8px;">강점 (Strengths)</div>
+        <ul style="font-size:12px;color:#4a5568;padding-left:16px;line-height:2;">
+          <li>전체 평균 <strong>4.74점/5점</strong>, 168명 응답으로 높은 만족도 유지</li>
+          <li>워크플로우 2차에서 1차 대비 <strong>+0.32점</strong> 대폭 상승 → 특히 현업 적용도 +0.53</li>
+          <li>엑셀 비서 2차에서 1차 대비 <strong>+0.09점</strong> 추가 상승 → VBA·AI 실습 호응 지속</li>
+          <li>전 과정에서 <strong>운영 만족도</strong>가 가장 높아 교육 운영 체계 우수</li>
+          <li>실습 위주 교육 + AI 활용 연계에 대한 학습자 호응 높음</li>
+        </ul>
+      </div>
+      <div class="cc">
+        <div class="cn" style="color:#e53e3e;font-size:13px;margin-bottom:8px;">개선 포인트 (Improvements)</div>
+        <ul style="font-size:12px;color:#4a5568;padding-left:16px;line-height:2;">
+          <li>워크플로우 통합 <strong>4.68점</strong>, AI 데이터 <strong>4.65점</strong> — 현업 적용도 지속 보강 필요</li>
+          <li>전 과정 <strong>현업 적용도</strong>가 가장 낮은 영역 → 실무 사례 확대</li>
+          <li>학습자 수준 차이 고려한 <strong>난이도 분반</strong> 검토 (특히 AI·엑셀 과정)</li>
+          <li>일부 과정 <strong>교육 시간 부족</strong> 피드백 → 시간 확대 or 핵심 집중</li>
+          <li><strong>AI 심화 교육</strong>(프롬프트, AI 에이전트)에 대한 수요 매우 높음</li>
+        </ul>
+      </div>
     </div>
   </div>
-
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-// Question Detail Chart
-Chart.defaults.font.family = "'Pretendard', sans-serif";
-new Chart(document.getElementById('qChart'), {
-  type: 'bar',
-  data: {
-    labels: ['교육과정 전반', '교육목적 부합', '업무 도움', '강사 지식', '강사 전달력', '운영 원활성', '교육 준비/진행'],
-    datasets: [
-      { label: 'SW(통합)',      data: [4.88,4.88,4.88,4.91,4.88,4.82,4.91], backgroundColor: '#00875A99', borderColor: '#00875A', borderWidth: 1.5, borderRadius: 4 },
-      { label: '원페이지(통합)', data: [4.77,4.85,4.85,4.92,4.77,4.92,4.92], backgroundColor: '#1D4ED899', borderColor: '#1D4ED8', borderWidth: 1.5, borderRadius: 4 },
-      { label: '엑셀 비서',    data: [4.60,4.60,4.47,4.73,4.73,4.80,4.67], backgroundColor: '#B4530999', borderColor: '#B45309', borderWidth: 1.5, borderRadius: 4 },
-      { label: 'AI 데이터(통합)', data: [4.57,4.57,4.55,4.62,4.65,4.78,4.76], backgroundColor: '#7C3AED99', borderColor: '#7C3AED', borderWidth: 1.5, borderRadius: 4 },
-      { label: '워크플로우',   data: [4.41,4.47,4.18,4.59,4.53,4.71,4.76], backgroundColor: '#B91C1C99', borderColor: '#B91C1C', borderWidth: 1.5, borderRadius: 4 },
-    ]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { position: 'bottom', labels: { font: { size: 11 }, usePointStyle: true, padding: 12 } }
-    },
-    scales: {
-      y: { min: 3.8, max: 5.1, ticks: { stepSize: .2, font: { family: "'DM Mono', monospace", size: 10 } }, grid: { color: '#F3F4F6' } },
-      x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 20 } }
-    }
-  }
+const C={g:'#38a169',b:'#3182ce',y:'#d69e2e',r:'#e53e3e',p:'#805ad5'};
+
+// 1. Course Overview (5 courses, combined)
+new Chart(document.getElementById('courseOverviewChart'),{
+  type:'bar',
+  data:{labels:['Smart Writing\n(통합)','원페이지 기획\n(통합)','엑셀 비서\n(통합)','워크플로우\n(통합)','AI 데이터\n(통합)'],
+    datasets:[{label:'평균 만족도',data:[4.88,4.86,4.71,4.68,4.65],
+      backgroundColor:[C.b+'33',C.g+'33',C.y+'33',C.r+'33',C.p+'33'],
+      borderColor:[C.b,C.g,C.y,C.r,C.p],borderWidth:2,borderRadius:8,barThickness:40}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`만족도: ${ctx.parsed.y}점`}}},
+    scales:{y:{min:4.0,max:5.1,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}
 });
 
-// Feedback
-const fbData = {
-  'SW 1차': {
-    good: ['보고서 작성시 읽는 사람을 고려해야 한다는 점', 'AI 활용법 연계 + 기본 글쓰기 개념 설명', '풍부한 예시로 이해 용이', 'PPT 그래픽 자료 제공이 유익', '템플릿 공유, AI를 활용한 글쓰기'],
-    improve: ['강의장 온도 조절'],
-    future: ['AI를 활용한 보고서 작성', '스피치 기술 강의', '심화 과정 개설 희망', '리더십 교육']
+// 2. Radar (5 courses)
+new Chart(document.getElementById('categoryRadarChart'),{
+  type:'radar',
+  data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
+    datasets:[
+      {label:'Smart Writing',data:[4.88,4.88,4.89,4.86],borderColor:C.b,backgroundColor:C.b+'22',pointRadius:4,borderWidth:2},
+      {label:'원페이지 기획',data:[4.81,4.85,4.85,4.92],borderColor:C.g,backgroundColor:C.g+'22',pointRadius:4,borderWidth:2},
+      {label:'엑셀 비서(통합)',data:[4.65,4.58,4.77,4.77],borderColor:C.y,backgroundColor:C.y+'22',pointRadius:4,borderWidth:2},
+      {label:'AI 데이터',data:[4.57,4.55,4.63,4.77],borderColor:C.p,backgroundColor:C.p+'22',pointRadius:4,borderWidth:2},
+      {label:'워크플로우(통합)',data:[4.65,4.45,4.69,4.83],borderColor:C.r,backgroundColor:C.r+'22',pointRadius:4,borderWidth:2},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{r:{min:3.6,max:5.1,ticks:{stepSize:.3,font:{size:9}},pointLabels:{font:{size:11,weight:'600'}}}},
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,pointStyle:'circle',padding:10}}}}
+});
+
+// 3. SW Compare
+new Chart(document.getElementById('swCompareChart'),{
+  type:'bar',
+  data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
+    datasets:[
+      {label:'1차 (3월)',data:[4.79,4.86,4.86,4.75],backgroundColor:C.b+'55',borderColor:C.b,borderWidth:2,borderRadius:6},
+      {label:'2차 (4월)',data:[4.95,4.89,4.92,4.95],backgroundColor:'#2f855a55',borderColor:'#2f855a',borderWidth:2,borderRadius:6},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
+    scales:{y:{min:4.4,max:5.05,ticks:{stepSize:.1},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+});
+
+// 4. 원페이지 Compare
+new Chart(document.getElementById('opCompareChart'),{
+  type:'bar',
+  data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
+    datasets:[
+      {label:'1차 (3월)',data:[4.81,4.88,4.88,5.00],backgroundColor:C.g+'55',borderColor:C.g,borderWidth:2,borderRadius:6},
+      {label:'2차 (4월)',data:[4.81,4.83,4.83,4.89],backgroundColor:'#d6bcfa55',borderColor:'#805ad5',borderWidth:2,borderRadius:6},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
+    scales:{y:{min:4.4,max:5.1,ticks:{stepSize:.1},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+});
+
+// 5. AI 데이터 Compare
+new Chart(document.getElementById('aiCompareChart'),{
+  type:'bar',
+  data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
+    datasets:[
+      {label:'1차 (3월)',data:[4.32,4.14,4.32,4.54],backgroundColor:C.p+'55',borderColor:C.p,borderWidth:2,borderRadius:6},
+      {label:'2차 (4월)',data:[4.70,4.75,4.79,4.89],backgroundColor:'#9ae6b455',borderColor:'#38a169',borderWidth:2,borderRadius:6},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
+    scales:{y:{min:3.8,max:5.1,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+});
+
+// 5b. 엑셀 비서 차수별 비교
+new Chart(document.getElementById('excelCompareChart'),{
+  type:'bar',
+  data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
+    datasets:[
+      {label:'1차 (3월)',data:[4.60,4.47,4.73,4.73],backgroundColor:C.y+'55',borderColor:C.y,borderWidth:2,borderRadius:6},
+      {label:'2차 (4월)',data:[4.69,4.67,4.81,4.81],backgroundColor:'#ed893655',borderColor:'#ed8936',borderWidth:2,borderRadius:6},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
+    scales:{y:{min:3.8,max:5.1,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+});
+
+// 5c. 워크플로우 차수별 비교
+new Chart(document.getElementById('workflowCompareChart'),{
+  type:'bar',
+  data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
+    datasets:[
+      {label:'1차 (3월)',data:[4.44,4.18,4.56,4.74],backgroundColor:C.r+'55',borderColor:C.r,borderWidth:2,borderRadius:6},
+      {label:'2차 (4월)',data:[4.85,4.71,4.82,4.91],backgroundColor:'#fc818155',borderColor:'#fc8181',borderWidth:2,borderRadius:6},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
+    scales:{y:{min:3.8,max:5.1,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+});
+
+// 6. Question Detail (5 courses combined)
+const qs=['교육과정 전반','교육목적 부합','업무 도움','강사 지식','강사 전달력','운영 원활성','교육 준비/진행'];
+new Chart(document.getElementById('questionDetailChart'),{
+  type:'bar',
+  data:{labels:qs,
+    datasets:[
+      {label:'SW(통합)',data:[4.88,4.88,4.88,4.91,4.88,4.82,4.91],backgroundColor:C.b+'88',borderColor:C.b,borderWidth:1},
+      {label:'원페이지(통합)',data:[4.77,4.85,4.85,4.92,4.77,4.92,4.92],backgroundColor:C.g+'88',borderColor:C.g,borderWidth:1},
+      {label:'엑셀 비서(통합)',data:[4.65,4.63,4.58,4.77,4.76,4.84,4.70],backgroundColor:C.y+'88',borderColor:C.y,borderWidth:1},
+      {label:'AI 데이터(통합)',data:[4.57,4.57,4.55,4.62,4.65,4.78,4.76],backgroundColor:C.p+'88',borderColor:C.p,borderWidth:1},
+      {label:'워크플로우(통합)',data:[4.62,4.67,4.45,4.71,4.68,4.83,4.82],backgroundColor:C.r+'88',borderColor:C.r,borderWidth:1},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{font:{size:10},usePointStyle:true,padding:8}}},
+    scales:{y:{min:3.6,max:5.2,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:10},maxRotation:25}}}}
+});
+
+// 7. Distribution (누적: 기존 931건 + 1780 126건 + 1790 119건 = 1176건)
+const dd={5:937,4:188,3:41,2:8,1:2},tot=Object.values(dd).reduce((a,b)=>a+b,0);
+new Chart(document.getElementById('distributionChart'),{
+  type:'doughnut',
+  data:{labels:['5점','4점','3점','2점','1점'],
+    datasets:[{data:[937,188,41,8,2],backgroundColor:['#38a169','#68d391','#fbd38d','#fc8181','#e53e3e'],borderWidth:2,borderColor:'#fff'}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'55%',
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,padding:10}},
+      tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed}건 (${(ctx.parsed/tot*100).toFixed(1)}%)`}}}}
+});
+const dt=document.getElementById('distTable'),dc=['#38a169','#68d391','#fbd38d','#fc8181','#e53e3e'];
+[5,4,3,2,1].forEach((s,i)=>{const c=dd[s]||0,p=(c/tot*100).toFixed(1);
+  dt.innerHTML+=`<tr><td><strong>${s}점</strong></td><td style="text-align:center;">${c}건</td><td style="text-align:center;">${p}%</td><td><div class="pb" style="min-width:90px;"><div class="fl" style="width:${p}%;background:${dc[i]};"></div></div></td></tr>`;});
+
+// 8. Feedback by course
+const fbData={
+  'SW 1차':{
+    good:['보고서 작성시 읽는 사람을 고려해야 한다는 점','기본 글쓰기 개념 설명 + AI 활용법 연계가 유익','예시가 많아 이해 용이, 풍부한 자료 제공','PPT 활용 그래프 등 자료 제공이 유익','템플릿 공유, AI를 활용한 글쓰기','몰입이 잘되도록 강의 진행','즐겁고 지루하지 않은 강의, 실무 적용 가능'],
+    improve:['강의장 온도 조절'],
+    future:['AI를 활용한 보고서 작성','스피치 기술 강의','심화 과정 개설 희망','리더십 교육','전략 관련 경험담 강의']
   },
-  'SW 2차': {
-    good: ['McKinsey 프레임워크가 인상 깊었음', '문서 구조화 방법이 실무 적용 가능', '실무 template 제공', '조별 발표 없이 편안한 구성', '보고서 잘된 예시로 빠른 이해'],
-    improve: ['불필요한 정치 관련 언급 자제', '교육 시간 짧음 → 확대 희망', '출석체크 시간 오래 걸림'],
-    future: ['AI를 직접 활용하는 세션', 'AI 프롬프트 교육', '심화 과정 희망']
+  'SW 2차':{
+    good:['McKinsey 프레임워크가 인상 깊었음','도해작성법, 문서 구조화 방법이 실무 적용 가능','실무 template(canvas, 그래픽, 아이콘 등) 제공','조별 발표 없이 편안하게 참석 가능한 구성','문어체/구어체 구분, 그래프 활용법','보고서 잘된 예시를 보여주니 빠르게 이해','재미와 컨텐츠 모두를 잡는 강의'],
+    improve:['교육에 불필요한 정치 관련 이슈 언급 자제','교육 시간이 짧았음 → 시간 확대 희망','출석체크 시간이 오래 걸림','팔로업 과정 필요'],
+    future:['AI를 직접 활용하는 세션','AI prompt 사용 교육','심화 과정 희망','홍보글 등 글 종류별 작성법','잘 만들어진 PPT 예시 학습 과정','실무 보고/발표 방법']
   },
-  '원페이지 1차': {
-    good: ['바로 적용할 수 있는 강의', '헤드라인 뽑는 방법', '그래프/차트 이용법', '기획 목차 구성', '과제형 학습 방식'],
-    improve: ['입문 교육과 겹치는 내용 줄이면 좋겠음'],
-    future: ['강의 카테고리별 세부 강의', '발표 및 스피치 교육']
+  '원페이지 1차':{
+    good:['바로 적용할 수 있는 강의, 매우 만족','헤드라인 뽑는 방법','그래프/차트 이용, 구두 보고 방법','기획 목차 구성','그래프/테이블 시각화','과제형 학습 방식'],
+    improve:['입문 교육과 겹치는 내용 줄이면 좋겠음'],
+    future:['강의 카테고리별 세부 강의 진행','발표 및 스피치 교육']
   },
-  '원페이지 2차': {
-    good: ['문서기획 중요도 파악', '실제 적용 가능한 자료 위주', 'why-what-how 구분', '단계별 실습', '핵심 메시지 파악법'],
-    improve: ['실습 더 많았으면', 'SW 수업과 많이 겹침', '짧은 시간 → 디테일 부족'],
-    future: ['실습 위주 심화과정', 'AI 업무 활용 교육', '첨삭 중심의 교육']
+  '원페이지 2차':{
+    good:['문서기획에 대한 중요도 파악','보고서 잘 만드는 전략','실제 적용 가능한 자료 위주로 설명주셔서 유익','그래프 그리는 법, 형용사/명사 등 문구 선택','다양한 예시를 보여주어 이해가 쉬웠다','why-what-how를 구분하는 부분','문서 작성 방법론 학습 및 핵심 메시지 파악','기획서 작성에 실제 도움되는 내용이 많았음','모든 과정이 유익했고 특히 단계별 실습 부분','문서 설계도, 그래프 설명방법, 헤드라인 작성이 유용','중요한 부분을 콕콕 집어서 알려줌'],
+    improve:['실습이 더 많았으면 좋겠음','스마트라이팅 수업과 70% 이상 겹치는 느낌','짧은 시간 내 여러 가지를 다루다 보니 디테일 부족','시간이 더 있었으면 좋겠음'],
+    future:['실습 위주 심화과정','AI 업무 활용 교육','업무 성향별 글쓰기 수업','심화과정','실제 보고서 첨삭','첨삭 중심의 교육']
   },
-  'AI 데이터 1차': {
-    good: ['AI를 통한 엑셀 전처리 방법', '실무 유용한 함수 소개', '실습 위주 강의', 'TRIM/CLEAN 데이터 오염 제거'],
-    improve: ['주제는 AI이나 기초 엑셀이 대부분', '난이도 낮음 → 사전 안내 필요', '초급/중급/고급 분반 필요'],
-    future: ['데이터 분석 심화 + 매크로', 'AI 프롬프트 교육', 'AI 엑셀 심화과정']
+  'AI 데이터 1차':{
+    good:['AI를 통해 엑셀 전처리하는 방법이 유익','유용한 함수 및 엑셀 기능 소개','실습 위주 강의 진행','실무 유용한 내용 위주 수업, 재미있었음','엑셀을 이해하고 AI를 잘 사용하기 위한 내용','TRIM/CLEAN 등 데이터 오염 제거','GPT 사용방법과 데이터 정리방법'],
+    improve:['강의 주제가 AI 활용이었으나 기초 엑셀 기능이 대부분','난이도가 낮아 사전 난이도 안내 필요','GPT 응답이 부적절할 때 대처 방법 부족','초급/중급/고급 난이도 분반이 필요','심화된 내용이 추가되면 좋겠음'],
+    future:['데이터 분석 심화과정 및 매크로 교육','AI를 잘 활용하기 위한 프롬프트 교육','AI 엑셀 심화과정','실무 데이터 분석 방법 교육','같은 강사로 비슷한 주제 추가 강의 희망','다회차 심화 교육 희망']
   },
-  'AI 데이터 2차': {
-    good: ['엑셀 + AI 교차 활용법', '몰랐던 엑셀 함수와 AI 활용법', '데이터 정합성 체크 + 함수 적용', 'AI도 항상 정확하지 않다는 인사이트'],
-    improve: ['과정명 대비 AI 비중 낮음, 엑셀 위주', '수강자 레벨 차이 → 난이도 안내 필요', '교육 시간 부족'],
-    future: ['AI와 엑셀 결합 심화', 'AI 프롬프트 작성법', '엑셀 심화/고급']
+  'AI 데이터 2차':{
+    good:['엑셀의 순기능(전통 함수) 및 AI를 교차 활용하여 사용하는 법','몰랐던 엑셀 및 AI 활용 방법, 강사님이 유쾌해서 좋았음','엑셀 데이터 사용시 AI를 언제 사용하는 것이 좋은지 팁','엑셀의 새로운 함수와 기능들을 알게 되어 업무에 유용','엑셀 함수 + AI 접목으로 데이터 정합성 체크 및 함수 적용','평소 사용하지 않았던 함수 기능 학습','유료 AI도 다 정확하지 않다는 것을 알게됨','엑셀 기본 함수 + GPT 활용 데이터 정리 등 실무 유용','엑셀과 AI를 접목해서 실습해보는 교육'],
+    improve:['과정명 대비 AI 비중이 낮음, 엑셀 위주 진행','수강자 레벨에 따라 만족도 차이 → 사전 난이도 구체적 안내 필요','교육 시간이 부족함','진행 속도가 빨라 따라가기 어려움','긴 함수가 화면으로 보일 때 잘 안 보임'],
+    future:['표 예쁘게 만드는 법','엑셀 심화 / 고급과정','AI와 엑셀 결합 심화 설명','AI를 이용한 주제 확대','엑셀 데이터 자주 사용하는 정제방법','AI 프롬프트 작성 방법']
   },
-  '엑셀 비서': {
-    good: ['원본 데이터 오염 없이 전처리', 'AI 접목 엑셀 기능', 'GPT 활용 VBA 코드 만들기', '실습 위주 교육'],
-    improve: ['초반 진행 속도 빨랐음', '수강시간 짧음', '화면 따라할 시간 필요, 교재 희망'],
-    future: ['VBA 활용 대시보드 실습', '파워포인트/워드 통합 교육', '엑셀 심화']
+  '엑셀 비서 1차':{
+    good:['원본 데이터 오염 없이 전처리하는 방법이 유용','AI 접목한 엑셀 다양한 기능','챗GPT 활용 VBA 코드 만들기','고급 필터 활용 방법','실습 위주 교육이라 좋았음','실무 활용 함수와 기능 학습','VBA 실무 적용 내용'],
+    improve:['초반 진행 속도가 빨랐음','수식 이해도 차이가 있어 천천히 진행 필요','수강시간이 짧았음','화면 보고 따라할 시간 필요, 교재 희망'],
+    future:['VBA 활용 대시보드 실습 (심화)','파워포인트/워드 관련 통합 교육','연계 레벨업 교육','엑셀 심화 (고급 함수 등)','다른 오피스 프로그램 교육']
   },
-  '워크플로우': {
-    good: ['업무 시간×가치 사분면 분류', '단계별 예시가 구체적', '5why와 2×2 매트릭스가 유익', '기존 업무에 대한 관점 재고'],
-    improve: ['업무 자동화 부분이 뜬구름 같음', '하루 과정으로 심도 있는 내용 소화 어려움', 'High level이라 실제 접목 어려움'],
-    future: ['AI 업무 활용 / AI 에이전트', '학습시간 확대', '실제 AI 툴 활용 교육']
+  '엑셀 비서 2차':{
+    good:['AI를 활용해 피벗 테이블을 만드는 실습이 실무에 도움이 되었다','vba를 안써봤는데, 활용해 볼 수 있을것 같습니다','AI 활용','VBA 실습 내용','엑셀 자동화의 효율성','매크로 및 VBA코드','vba, 매크로를 이용하여 자동화를 해볼 수 있어서 좋았다','원데이터로 유의미한 데이터를 뽑아내는 방법을 AI로 유도해 물어볼 수 있어 좋음','vba를 쉽게 쓸수 있어 좋았다','AI를 실무에 바로 적용할 수 있게 어떤 방식으로 구체적으로 설명해주시는 부분이 좋았습니다'],
+    improve:['진도가 너무 빨라요','교육용 파일이 구글 드라이브에서 다운이 안되어 수업 도중 도움 받지 못함','화면이 뒷자리에서 잘 안보여요','실제 AI를 활용해야하는데 업무적으로 연동시키기 어려운 점','수업 시간에 오류 발생으로 지연됨','조금 빠른거 같았다'],
+    future:['실제 데이터로 분석하는 것도 알려주면 좋을 것 같습니다','AI 활용법','ai로 대시보드 예쁘게 꾸미기','실제 업무와 연동되는 데이터를 기준으로 실습','완성형 보고서 만들기','AI로 파이썬 활용하는 교육','AI와 파이썬 접목한 대시보드 생성']
+  },
+  '워크플로우 1차':{
+    good:['업무를 시간×가치 사분면 분류 → 집중 업무 파악','단계가 구체적으로 나뉘어져 있고 예시 참고 가능','업무효율 고민을 다양한 부서와 나눌 수 있어 유익','5why와 2x2 매트릭스가 유익','스스로 업무를 인식/나열하고 가치 평가한 것이 도움','실습이 재미있었음','기존 업무에 대한 관점 재고'],
+    improve:['업무 자동화 부분이 뜬구름 잡는 느낌','하루 과정으로 소화하기에 심도있는 내용','High level이라 실제 업무 접목이 어려움','업무 관련성 없는 분들과의 조별활동','용어/표현을 풀어서 설명 필요','비정형 업무라 개선 적용이 어려웠음'],
+    future:['AI 업무 활용 / AI 에이전트 강의','학습시간 확대','실습/타 부서 사례 심화 공유','업무를 성과로 작성/어필하는 법','스킬업 4과정 지속 운영 희망','실제 AI 툴 활용 교육']
+  },
+  '워크플로우 2차':{
+    good:['모든 과정이 만족스러웠습니다','High Value 선별기준 + AI 프롬프트 공유','실제 업무에 적용 가능한 강의로 구성','흐름도 파악','업무를 적어보고 이해관계자를 다시 정리하는게 좋았습니다','하나의 업무를 세분화해서 워크플로우를 만들고 필요한 것과 제거할 업무를 식별하고 RACI를 설정','업무 재점검을 통한 효율성 향상','워크플로우 재분석','AI 실무에 도움되는 샘플 시현이 좋았어요','업무와 업무 단계를 세분화하여 검토하고 개선방향 모색','내 업무 돌아보기'],
+    improve:['실습 비율 확대 희망','시현시간을 좀 더 할애하면 도움될 것 같아요','이틀 풀로 해보고 싶네요','워크플로우와 AI Copilot 사용이 혼재되어 있어 주제가 모호해짐'],
+    future:['Copilot을 업무 툴에 활용할 수 있는 실습 교육','Copilot 전용 강의 추가 개설','AI 활용 사례','다양한 현업 업무를 활용한 주제 선정','AI로 더 자세하게 워크플로우 재설계 해보기','AI의 다양한 활용법','AI 전문가 과정','코파일럿 심화과정','AI 심화과정','코파일럿 집중 수업']
   }
 };
-const tabOrder = ['SW 1차','SW 2차','원페이지 1차','원페이지 2차','AI 데이터 1차','AI 데이터 2차','엑셀 비서','워크플로우'];
-
-function renderFb(key) {
-  const d = fbData[key];
-  ['good','improve','future'].forEach(t => {
-    const el = document.getElementById(`fb-${t}`);
-    el.innerHTML = '';
-    const items = d[t] || [];
-    if (!items.length) {
-      el.innerHTML = '<div class="fb-empty">해당 응답 없음</div>';
-    } else {
-      items.forEach(tx => { el.innerHTML += `<div class="fb-item">${tx}</div>`; });
-    }
+const tabs=['SW 1차','SW 2차','원페이지 1차','원페이지 2차','AI 데이터 1차','AI 데이터 2차','엑셀 비서 1차','엑셀 비서 2차','워크플로우 1차','워크플로우 2차'];
+const bc2={good:'#38a169',improve:'#e53e3e',future:'#805ad5'};
+function renderFb(tab){
+  const d=fbData[tab];
+  ['good','improve','future'].forEach(t=>{
+    const el=document.getElementById(`fb-${t}`);
+    el.innerHTML='';
+    (d[t]||[]).forEach(tx=>{
+      el.innerHTML+=`<div class="fc" style="border-left-color:${bc2[t]};"><div class="tx">${tx}</div></div>`;
+    });
+    if(!d[t]||d[t].length===0) el.innerHTML='<div style="font-size:11px;color:#a0aec0;padding:8px;">해당 응답 없음</div>';
   });
 }
-
-const tabsEl = document.getElementById('fbTabs');
-tabOrder.forEach((key, i) => {
-  const btn = document.createElement('button');
-  btn.className = 'fb-tab' + (i === 0 ? ' active' : '');
-  btn.textContent = key;
-  btn.onclick = () => {
-    tabsEl.querySelectorAll('.fb-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderFb(key);
+const tabEl=document.getElementById('fbTabs');
+tabs.forEach((t,i)=>{
+  const btn=document.createElement('button');
+  btn.textContent=t;
+  btn.style.cssText='padding:6px 14px;border:1px solid #e2e8f0;background:'+(i===0?'#3182ce':'white')+';color:'+(i===0?'white':'#4a5568')+';border-radius:8px;cursor:pointer;font-size:11px;font-family:"Noto Sans KR",sans-serif;transition:.2s;';
+  btn.onclick=()=>{
+    tabEl.querySelectorAll('button').forEach(b=>{b.style.background='white';b.style.color='#4a5568';b.style.borderColor='#e2e8f0';});
+    btn.style.background='#3182ce';btn.style.color='white';btn.style.borderColor='#3182ce';
+    renderFb(t);
   };
-  tabsEl.appendChild(btn);
+  tabEl.appendChild(btn);
 });
-renderFb(tabOrder[0]);
+renderFb(tabs[0]);
 </script>
 </body>
 </html>
