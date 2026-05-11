@@ -306,7 +306,7 @@ new Chart(document.getElementById('courseOverviewChart'),{
       borderColor:[C.b,C.g,C.y,C.r,C.p],borderWidth:2,borderRadius:8,barThickness:40}]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`만족도: ${ctx.parsed.y}점`}}},
-    scales:{y:{min:4.0,max:5.1,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}
+    scales:{y:{min:4.0,max:5.0,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}
 });
 
 // 2. Radar (5 courses)
@@ -321,7 +321,7 @@ new Chart(document.getElementById('categoryRadarChart'),{
       {label:'워크플로우(통합)',data:[4.65,4.45,4.69,4.83],borderColor:C.r,backgroundColor:C.r+'22',pointRadius:4,borderWidth:2},
     ]},
   options:{responsive:true,maintainAspectRatio:false,
-    scales:{r:{min:3.6,max:5.1,ticks:{stepSize:.3,font:{size:9}},pointLabels:{font:{size:11,weight:'600'}}}},
+    scales:{r:{min:3.6,max:5.0,ticks:{stepSize:.3,font:{size:9}},pointLabels:{font:{size:11,weight:'600'}}}},
     plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,pointStyle:'circle',padding:10}}}}
 });
 
@@ -336,7 +336,7 @@ new Chart(document.getElementById('swCompareChart'),{
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
-    scales:{y:{min:4.4,max:5.05,ticks:{stepSize:.1},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+    scales:{y:{min:4.4,max:5.0,ticks:{stepSize:.1},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
 });
 
 // 4. 원페이지 Compare
@@ -349,7 +349,7 @@ new Chart(document.getElementById('opCompareChart'),{
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
-    scales:{y:{min:4.4,max:5.1,ticks:{stepSize:.1},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+    scales:{y:{min:4.4,max:5.0,ticks:{stepSize:.1},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
 });
 
 // 5. AI 데이터 Compare
@@ -362,7 +362,7 @@ new Chart(document.getElementById('aiCompareChart'),{
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
-    scales:{y:{min:3.8,max:5.1,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+    scales:{y:{min:3.8,max:5.0,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
 });
 
 // 5b. 엑셀 비서 차수별 비교
@@ -375,7 +375,7 @@ new Chart(document.getElementById('excelCompareChart'),{
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
-    scales:{y:{min:3.8,max:5.1,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+    scales:{y:{min:3.8,max:5.0,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
 });
 
 // 5c. 워크플로우 차수별 비교
@@ -388,7 +388,7 @@ new Chart(document.getElementById('workflowCompareChart'),{
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
-    scales:{y:{min:3.8,max:5.1,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
+    scales:{y:{min:3.8,max:5.0,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}
 });
 
 // 6. Question Detail (5 courses combined)
@@ -405,7 +405,7 @@ new Chart(document.getElementById('questionDetailChart'),{
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:10},usePointStyle:true,padding:8}}},
-    scales:{y:{min:3.6,max:5.2,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:10},maxRotation:25}}}}
+    scales:{y:{min:3.6,max:5.0,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:10},maxRotation:25}}}}
 });
 
 // 7. Distribution (누적: 기존 1176건 + 1842 SW 3차 139건 = 1315건)
