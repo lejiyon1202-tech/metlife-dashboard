@@ -107,7 +107,11 @@
 
   // "없습니다", "없어요"처럼 내용이 없는 응답을 가려낸다
   const NONE = /^(전혀|특별히|딱히|별로)?(없음|없습니다|없어요|없슴|없다|없네요|해당없음|무|x|개선할점은없습니다|개선할점없습니다|개선점없습니다)$/i;
-  function isNone(t) { return NONE.test(String(t).replace(/[\s.!~,]/g, '')); }
+  // 기호나 글자 하나뿐인 응답("-", "d")과 "NA"도 내용이 없는 응답으로 본다
+  function isNone(t) {
+    const s = String(t).replace(/[\s.!~,]/g, '');
+    return s.length <= 1 || /^n\/?a$/i.test(s) || NONE.test(s);
+  }
 
   // 처음 6건만 보여 주고 나머지는 버튼으로 연다
   function commentList(list) {
