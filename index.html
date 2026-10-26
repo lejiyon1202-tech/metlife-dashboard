@@ -26,6 +26,7 @@
   .st{font-size:15px;font-weight:600;color:#2d3748;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid #e2e8f0;display:flex;align-items:center;gap:8px;}
   .st .ic{font-size:18px;}
   .g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .g2>*{min-width:0;}
   .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
   .cc{background:#f7fafc;border-radius:10px;padding:14px 18px;border:1px solid #e2e8f0;transition:transform .2s;}
   .cc:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1);}
@@ -36,6 +37,15 @@
   .pb{height:7px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:4px;}
   .pb .fl{height:100%;border-radius:4px;}
   table{width:100%;border-collapse:collapse;}
+  /* 표가 화면보다 넓어지면 이 상자 안에서만 좌우로 밀린다 — 화면 전체는 안 밀린다.
+     min-width:0 이 있어야 그리드 자식인 이 상자가 화면 폭으로 줄어든다.
+     min-width 520px 은 차수별 비교 표(열 여덟) 기준값이다.
+     열이 적은 두 표는 자연 폭(영역별 291 · 분포 236~276)이 좁아 화면 폭에 맞춰 줄이면
+     글자가 줄바꿈으로 터진다(320px 화면에서 높이 +105~123px 실측).
+     그것보다 넉넉한 값이면 되고 tw-s 로 320px 을 쓴다. 최적값을 찾은 것은 아니다. */
+  .tw{overflow-x:auto;min-width:0;}
+  .tw table{min-width:520px;}
+  .tw.tw-s table{min-width:320px;}
   th{background:#f7fafc;padding:8px 10px;text-align:left;font-size:11px;font-weight:600;color:#4a5568;border-bottom:2px solid #e2e8f0;}
   td{padding:7px 10px;font-size:11px;border-bottom:1px solid #f0f0f0;color:#4a5568;}
   tr:hover td{background:#f7fafc;}
@@ -52,25 +62,26 @@
   .round-tab button.active{background:white;color:#2d3748;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.1);}
   .change-up{color:#38a169;font-weight:600;}
   .change-down{color:#e53e3e;font-weight:600;}
+  .change-flat{color:#718096;font-weight:600;}
   @media(max-width:1100px){.summary-row{grid-template-columns:repeat(3,1fr);}.g2,.g3{grid-template-columns:1fr;}}
   @media(max-width:700px){.summary-row{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
 <div class="header">
-  <div><h1>MetLife 오프라인 교육 만족도 대시보드</h1><div class="sub">2026년 3~6월 리더스 아카데미 교육 과정 설문 분석 결과</div></div>
-  <div class="badge">조사기간: 2026.03.04 ~ 2026.06.22</div>
+  <div><h1>MetLife 오프라인 교육 만족도 대시보드</h1><div class="sub">리더스 아카데미 교육 과정 설문 분석 결과</div></div>
+  <div class="badge">전체 25차수 · 479명 응답</div>
 </div>
 <div class="container">
-  <div class="note">※ 테스트·관리자 계정 4건을 제외한 실제 학습자 응답만 분석. 동일 과정명은 통합 만족도 + 차수별 비교로 구분. 최근 추가: 글쓰기 4차·엑셀 비서 4차 (2026.06.22, 각 25명).</div>
+  <div class="note">※ 테스트·관리자 계정 4건을 제외한 실제 학습자 응답만 분석. 동일 과정명은 통합 만족도 + 차수별 비교로 구분.</div>
 
   <!-- Summary -->
   <div class="summary-row">
-    <div class="sc"><div class="lb">분석 과정 수</div><div class="vl">5<span class="un">개</span></div><div class="sb">18차수 (SW·원페이지·AI·엑셀·워크플로우)</div></div>
-    <div class="sc"><div class="lb">총 응답자 수</div><div class="vl">350<span class="un">명</span></div><div class="sb">테스트/관리자 제외</div></div>
-    <div class="sc"><div class="lb">전체 평균 만족도</div><div class="vl">4.77<span class="un">/5</span></div><div class="sb">5점 만점 기준</div></div>
-    <div class="sc"><div class="lb">최고 만족도 과정</div><div class="vl" style="font-size:14px;">Smart Writing</div><div class="sb">통합 평균 4.92점 (78명)</div></div>
-    <div class="sc"><div class="lb">총 만족도 응답</div><div class="vl">2,450<span class="un">건</span></div><div class="sb">7문항 × 응답자</div></div>
+    <div class="sc"><div class="lb">분석 과정 수</div><div class="vl">5<span class="un">개</span></div><div class="sb">25차수 (SW·원페이지·AI·엑셀·워크플로우)</div></div>
+    <div class="sc"><div class="lb">총 응답자 수</div><div class="vl">479<span class="un">명</span></div><div class="sb">테스트/관리자 제외</div></div>
+    <div class="sc"><div class="lb">전체 평균 만족도</div><div class="vl">4.79<span class="un">/5</span></div><div class="sb">5점 만점 기준</div></div>
+    <div class="sc"><div class="lb">최고 만족도 과정</div><div class="vl" style="font-size:14px;">Smart Writing</div><div class="sb">통합 평균 4.93점 (100명)</div></div>
+    <div class="sc"><div class="lb">총 만족도 응답</div><div class="vl">3,353<span class="un">건</span></div><div class="sb">7문항 × 응답자</div></div>
   </div>
 
   <!-- Course Overview -->
@@ -79,11 +90,11 @@
     <div class="g2">
       <div><div class="ch"><canvas id="courseOverviewChart"></canvas></div></div>
       <div>
-        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">1위 &nbsp;[Smart Writing] 한 번에 이해되는 글쓰기 <span style="font-size:10px;color:#718096;">(1차+2차+3차+4차)</span></div><div class="bs" style="color:#3182ce;">4.92</div></div><div class="sr"><div class="sl">응답자 78명 (1차 14명 + 2차 19명 + 3차 20명 + 4차 25명)</div></div><div class="pb"><div class="fl" style="width:98.4%;background:#3182ce;"></div></div></div>
-        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">2위 &nbsp;원페이지 기획의 기술 - 상대를 움직이는 설득 전략 <span style="font-size:10px;color:#718096;">(1차+2차+3차)</span></div><div class="bs" style="color:#38a169;">4.91</div></div><div class="sr"><div class="sl">응답자 40명 (1차 8명 + 2차 18명 + 3차 14명)</div></div><div class="pb"><div class="fl" style="width:98.2%;background:#38a169;"></div></div></div>
-        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">3위 &nbsp;나만의 엑셀 비서 만들기 - 엑셀 업무 효율화 <span style="font-size:10px;color:#718096;">(1차+2차+3차+4차)</span></div><div class="bs" style="color:#d69e2e;">4.72</div></div><div class="sr"><div class="sl">응답자 85명 (1차 15명 + 2차 18명 + 3차 27명 + 4차 25명)</div></div><div class="pb"><div class="fl" style="width:94.4%;background:#d69e2e;"></div></div></div>
-        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">4위 &nbsp;AI로 끝내는 데이터 정리 - 반복 작업 3초 해결 <span style="font-size:10px;color:#718096;">(1차+2차+3차+4차)</span></div><div class="bs" style="color:#805ad5;">4.68</div></div><div class="sr"><div class="sl">응답자 91명 (1차 14명 + 2차 28명 + 3차 23명 + 4차 26명)</div></div><div class="pb"><div class="fl" style="width:93.6%;background:#805ad5;"></div></div></div>
-        <div class="cc"><div class="sr"><div class="cn">5위 &nbsp;워크플로우 리부트 - 일하는 방식 재설계 <span style="font-size:10px;color:#718096;">(1차+2차+3차)</span></div><div class="bs" style="color:#e53e3e;">4.66</div></div><div class="sr"><div class="sl">응답자 56명 (1차 17명 + 2차 17명 + 3차 22명)</div></div><div class="pb"><div class="fl" style="width:93.2%;background:#e53e3e;"></div></div></div>
+                <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">1위 &nbsp;[Smart Writing] 한 번에 이해되는 글쓰기 <span style="font-size:10px;color:#718096;">(1차+2차+3차+4차+5차)</span></div><div class="bs" style="color:#3182ce;">4.93</div></div><div class="sr"><div class="sl">응답자 100명 (1차 14명 + 2차 19명 + 3차 20명 + 4차 25명 + 5차 22명)</div></div><div class="pb"><div class="fl" style="width:98.6%;background:#3182ce;"></div></div></div>
+        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">2위 &nbsp;원페이지 기획의 기술 - 상대를 움직이는 설득 전략 <span style="font-size:10px;color:#718096;">(1차+2차+3차+4차+5차)</span></div><div class="bs" style="color:#38a169;">4.90</div></div><div class="sr"><div class="sl">응답자 76명 (1차 8명 + 2차 18명 + 3차 14명 + 4차 21명 + 5차 15명)</div></div><div class="pb"><div class="fl" style="width:98.0%;background:#38a169;"></div></div></div>
+        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">3위 &nbsp;나만의 엑셀 비서 만들기 - 엑셀 업무 효율화 <span style="font-size:10px;color:#718096;">(1차+2차+3차+4차+5차)</span></div><div class="bs" style="color:#d69e2e;">4.77</div></div><div class="sr"><div class="sl">응답자 110명 (1차 15명 + 2차 18명 + 3차 27명 + 4차 25명 + 5차 25명)</div></div><div class="pb"><div class="fl" style="width:95.4%;background:#d69e2e;"></div></div></div>
+        <div class="cc" style="margin-bottom:7px;"><div class="sr"><div class="cn">4위 &nbsp;워크플로우 리부트 - 일하는 방식 재설계 <span style="font-size:10px;color:#718096;">(1차+2차+3차+4차+5차)</span></div><div class="bs" style="color:#e53e3e;">4.69</div></div><div class="sr"><div class="sl">응답자 77명 (1차 17명 + 2차 17명 + 3차 22명 + 4차 9명 + 5차 12명)</div></div><div class="pb"><div class="fl" style="width:93.8%;background:#e53e3e;"></div></div></div>
+        <div class="cc"><div class="sr"><div class="cn">5위 &nbsp;AI로 끝내는 데이터 정리 - 반복 작업 3초 해결 <span style="font-size:10px;color:#718096;">(1차+2차+3차+4차+5차)</span></div><div class="bs" style="color:#805ad5;">4.68</div></div><div class="sr"><div class="sl">응답자 116명 (1차 14명 + 2차 28명 + 3차 23명 + 4차 26명 + 5차 25명)</div></div><div class="pb"><div class="fl" style="width:93.6%;background:#805ad5;"></div></div></div>
       </div>
     </div>
   </div>
@@ -94,17 +105,19 @@
     <div class="g2">
       <div class="ch" style="height:360px;"><canvas id="categoryRadarChart"></canvas></div>
       <div>
-        <table>
-          <thead><tr><th>과정명</th><th style="text-align:center;">교육</th><th style="text-align:center;">현업적용</th><th style="text-align:center;">강사</th><th style="text-align:center;">운영</th></tr></thead>
-          <tbody>
-            <tr><td>Smart Writing (통합)</td><td style="text-align:center;"><span class="badge-h">4.93</span></td><td style="text-align:center;"><span class="badge-h">4.90</span></td><td style="text-align:center;"><span class="badge-h">4.95</span></td><td style="text-align:center;"><span class="badge-h">4.90</span></td></tr>
-            <tr><td>원페이지 기획 (통합)</td><td style="text-align:center;"><span class="badge-h">4.88</span></td><td style="text-align:center;"><span class="badge-h">4.90</span></td><td style="text-align:center;"><span class="badge-h">4.90</span></td><td style="text-align:center;"><span class="badge-h">4.95</span></td></tr>
-            <tr><td>엑셀 비서 만들기 (통합)</td><td style="text-align:center;"><span class="badge-m">4.69</span></td><td style="text-align:center;"><span class="badge-m">4.60</span></td><td style="text-align:center;"><span class="badge-h">4.75</span></td><td style="text-align:center;"><span class="badge-h">4.78</span></td></tr>
-            <tr><td>AI 데이터 정리 (통합)</td><td style="text-align:center;"><span class="badge-m">4.61</span></td><td style="text-align:center;"><span class="badge-m">4.57</span></td><td style="text-align:center;"><span class="badge-m">4.62</span></td><td style="text-align:center;"><span class="badge-m">4.73</span></td></tr>
-            <tr><td>워크플로우 리부트 (통합)</td><td style="text-align:center;"><span class="badge-m">4.65</span></td><td style="text-align:center;"><span class="badge-m">4.45</span></td><td style="text-align:center;"><span class="badge-m">4.69</span></td><td style="text-align:center;"><span class="badge-h">4.83</span></td></tr>
-            <tr style="background:#f7fafc;font-weight:600;"><td>전체 평균</td><td style="text-align:center;">4.74</td><td style="text-align:center;">4.67</td><td style="text-align:center;">4.77</td><td style="text-align:center;">4.82</td></tr>
-          </tbody>
-        </table>
+        <div class="tw tw-s">
+          <table>
+            <thead><tr><th>과정명</th><th style="text-align:center;">교육</th><th style="text-align:center;">현업적용</th><th style="text-align:center;">강사</th><th style="text-align:center;">운영</th></tr></thead>
+            <tbody>
+              <tr><td>Smart Writing (통합)</td><td style="text-align:center;"><span class="badge-h">4.93</span></td><td style="text-align:center;"><span class="badge-h">4.90</span></td><td style="text-align:center;"><span class="badge-h">4.95</span></td><td style="text-align:center;"><span class="badge-h">4.91</span></td></tr>
+              <tr><td>원페이지 기획 (통합)</td><td style="text-align:center;"><span class="badge-h">4.85</span></td><td style="text-align:center;"><span class="badge-h">4.86</span></td><td style="text-align:center;"><span class="badge-h">4.92</span></td><td style="text-align:center;"><span class="badge-h">4.94</span></td></tr>
+              <tr><td>엑셀 비서 만들기 (통합)</td><td style="text-align:center;"><span class="badge-m">4.74</span></td><td style="text-align:center;"><span class="badge-m">4.66</span></td><td style="text-align:center;"><span class="badge-h">4.80</span></td><td style="text-align:center;"><span class="badge-h">4.82</span></td></tr>
+              <tr><td>AI 데이터 정리 (통합)</td><td style="text-align:center;"><span class="badge-m">4.66</span></td><td style="text-align:center;"><span class="badge-m">4.59</span></td><td style="text-align:center;"><span class="badge-m">4.64</span></td><td style="text-align:center;"><span class="badge-h">4.79</span></td></tr>
+              <tr><td>워크플로우 리부트 (통합)</td><td style="text-align:center;"><span class="badge-m">4.63</span></td><td style="text-align:center;"><span class="badge-m">4.45</span></td><td style="text-align:center;"><span class="badge-m">4.71</span></td><td style="text-align:center;"><span class="badge-h">4.83</span></td></tr>
+              <tr style="background:#f7fafc;font-weight:600;"><td>전체 평균</td><td style="text-align:center;">4.76</td><td style="text-align:center;">4.69</td><td style="text-align:center;">4.80</td><td style="text-align:center;">4.85</td></tr>
+            </tbody>
+          </table>
+          </div>
         <div style="margin-top:14px;padding:10px 12px;background:#f7fafc;border-radius:8px;font-size:11px;color:#4a5568;">
           <strong>핵심:</strong> 전 과정 <span style="color:#38a169;font-weight:600;">운영 만족도</span>가 가장 높고, <span style="color:#e53e3e;font-weight:600;">현업 적용도</span>가 상대적으로 가장 낮음
         </div>
@@ -118,19 +131,21 @@
     <div class="g2">
       <div class="ch"><canvas id="swCompareChart"></canvas></div>
       <div>
+        <div class="tw">
         <table>
-          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/9)</th><th style="text-align:center;">2차 (4/7)</th><th style="text-align:center;">3차 (5/11)</th><th style="text-align:center;">4차 (6/22)</th><th style="text-align:center;">통합</th><th style="text-align:center;">3차→4차</th></tr></thead>
-          <tbody>
-            <tr><td>응답자</td><td style="text-align:center;">14명</td><td style="text-align:center;">19명</td><td style="text-align:center;">20명</td><td style="text-align:center;">25명</td><td style="text-align:center;">78명</td><td style="text-align:center;"><span class="change-up">+5명</span></td></tr>
-            <tr><td>전체 평균</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.93</td><td style="text-align:center;">4.96</td><td style="text-align:center;">4.94</td><td style="text-align:center;">4.92</td><td style="text-align:center;"><span class="change-down">-0.02</span></td></tr>
-            <tr><td>교육 만족</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.98</td><td style="text-align:center;">4.93</td><td style="text-align:center;"><span class="change-up">+0.03</span></td></tr>
-            <tr><td>현업 적용</td><td style="text-align:center;">4.86</td><td style="text-align:center;">4.89</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.84</td><td style="text-align:center;">4.90</td><td style="text-align:center;"><span class="change-down">-0.16</span></td></tr>
-            <tr><td>강사 만족</td><td style="text-align:center;">4.86</td><td style="text-align:center;">4.92</td><td style="text-align:center;">4.98</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.95</td><td style="text-align:center;"><span class="change-up">+0.02</span></td></tr>
-            <tr><td>운영 만족</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.90</td><td style="text-align:center;">4.90</td><td style="text-align:center;"><span class="change-down">-0.05</span></td></tr>
-          </tbody>
-        </table>
+            <thead><tr><th>항목</th><th style="text-align:center;">1차</th><th style="text-align:center;">2차</th><th style="text-align:center;">3차</th><th style="text-align:center;">4차</th><th style="text-align:center;">5차</th><th style="text-align:center;">통합</th><th style="text-align:center;">4차→5차</th></tr></thead>
+            <tbody>
+              <tr><td>응답자</td><td style="text-align:center;">14명</td><td style="text-align:center;">19명</td><td style="text-align:center;">20명</td><td style="text-align:center;">25명</td><td style="text-align:center;">22명</td><td style="text-align:center;">100명</td><td style="text-align:center;"><span class="change-down">-3명</span></td></tr>
+              <tr><td>전체 평균</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.93</td><td style="text-align:center;">4.96</td><td style="text-align:center;">4.94</td><td style="text-align:center;">4.94</td><td style="text-align:center;">4.93</td><td style="text-align:center;"><span class="change-flat">0.00</span></td></tr>
+              <tr><td>교육 만족</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.98</td><td style="text-align:center;">4.93</td><td style="text-align:center;">4.93</td><td style="text-align:center;"><span class="change-down">-0.05</span></td></tr>
+              <tr><td>현업 적용</td><td style="text-align:center;">4.86</td><td style="text-align:center;">4.89</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.84</td><td style="text-align:center;">4.91</td><td style="text-align:center;">4.90</td><td style="text-align:center;"><span class="change-up">+0.07</span></td></tr>
+              <tr><td>강사 만족</td><td style="text-align:center;">4.86</td><td style="text-align:center;">4.92</td><td style="text-align:center;">4.97</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.96</td><td style="text-align:center;">4.95</td><td style="text-align:center;"><span class="change-down">-0.04</span></td></tr>
+              <tr><td>운영 만족</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.95</td><td style="text-align:center;">4.90</td><td style="text-align:center;">4.96</td><td style="text-align:center;">4.91</td><td style="text-align:center;"><span class="change-up">+0.05</span></td></tr>
+            </tbody>
+          </table>
+          </div>
         <div style="margin-top:14px;padding:10px 12px;background:#edf7ed;border-radius:8px;font-size:11px;color:#276749;">
-          <strong>분석:</strong> 4차에서도 <strong>4.94점 高만족 유지</strong> (강사 만족 5.00 만점·교육 +0.03). 현업 적용(-0.16)은 일부 하락했으나 4회차 연속 4.9점대 — 콘텐츠 안정성 지속.
+          <strong>분석:</strong> 5차 <strong>4.94점 高만족 유지</strong> (강사 4.96·운영 4.96). 4차에 4.84까지 내려갔던 현업 적용도가 4.91로 회복(+0.07). 1차 4.81 이후 <strong>2~5차 네 차수 연속 4.9점대</strong> — 콘텐츠 안정성 지속.
         </div>
       </div>
     </div>
@@ -142,19 +157,21 @@
     <div class="g2">
       <div class="ch"><canvas id="opCompareChart"></canvas></div>
       <div>
+        <div class="tw">
         <table>
-          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/18)</th><th style="text-align:center;">2차 (4/20)</th><th style="text-align:center;">3차 (6/1)</th><th style="text-align:center;">통합</th><th style="text-align:center;">2차→3차</th></tr></thead>
-          <tbody>
-            <tr><td>응답자</td><td style="text-align:center;">8명</td><td style="text-align:center;">18명</td><td style="text-align:center;">14명</td><td style="text-align:center;">40명</td><td style="text-align:center;"><span class="change-down">-4명</span></td></tr>
-            <tr><td>전체 평균</td><td style="text-align:center;">4.89</td><td style="text-align:center;">4.84</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.91</td><td style="text-align:center;"><span class="change-up">+0.16</span></td></tr>
-            <tr><td>교육 만족</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.81</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.88</td><td style="text-align:center;"><span class="change-up">+0.19</span></td></tr>
-            <tr><td>현업 적용</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.83</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.90</td><td style="text-align:center;"><span class="change-up">+0.17</span></td></tr>
-            <tr><td>강사 만족</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.83</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.90</td><td style="text-align:center;"><span class="change-up">+0.17</span></td></tr>
-            <tr><td>운영 만족</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.89</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.95</td><td style="text-align:center;"><span class="change-up">+0.11</span></td></tr>
-          </tbody>
-        </table>
+            <thead><tr><th>항목</th><th style="text-align:center;">1차</th><th style="text-align:center;">2차</th><th style="text-align:center;">3차</th><th style="text-align:center;">4차</th><th style="text-align:center;">5차</th><th style="text-align:center;">통합</th><th style="text-align:center;">4차→5차</th></tr></thead>
+            <tbody>
+              <tr><td>응답자</td><td style="text-align:center;">8명</td><td style="text-align:center;">18명</td><td style="text-align:center;">14명</td><td style="text-align:center;">21명</td><td style="text-align:center;">15명</td><td style="text-align:center;">76명</td><td style="text-align:center;"><span class="change-down">-6명</span></td></tr>
+              <tr><td>전체 평균</td><td style="text-align:center;">4.89</td><td style="text-align:center;">4.84</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.92</td><td style="text-align:center;">4.84</td><td style="text-align:center;">4.90</td><td style="text-align:center;"><span class="change-down">-0.08</span></td></tr>
+              <tr><td>교육 만족</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.81</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.73</td><td style="text-align:center;">4.85</td><td style="text-align:center;"><span class="change-down">-0.15</span></td></tr>
+              <tr><td>현업 적용</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.83</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.76</td><td style="text-align:center;">4.87</td><td style="text-align:center;">4.86</td><td style="text-align:center;"><span class="change-up">+0.11</span></td></tr>
+              <tr><td>강사 만족</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.83</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.98</td><td style="text-align:center;">4.90</td><td style="text-align:center;">4.92</td><td style="text-align:center;"><span class="change-down">-0.08</span></td></tr>
+              <tr><td>운영 만족</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.89</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.98</td><td style="text-align:center;">4.87</td><td style="text-align:center;">4.94</td><td style="text-align:center;"><span class="change-down">-0.11</span></td></tr>
+            </tbody>
+          </table>
+          </div>
         <div style="margin-top:14px;padding:10px 12px;background:#edf7ed;border-radius:8px;font-size:11px;color:#276749;">
-          <strong>분석:</strong> 3차에서 <strong>14명 전원 Q1~Q7 모두 5점 만점</strong> 응답으로 <strong>전 영역 완전 만점(+0.16)</strong>. 통합 평균 4.91로 SW와 공동 1위. 5점 만점 차수는 전체 14차수 중 첫 사례.
+          <strong>분석:</strong> 3차에서 <strong>14명 전원 Q1~Q7 모두 5점 만점</strong> 응답으로 <strong>전 영역 완전 만점(+0.16)</strong>. 지금까지 진행된 차수 중 전체 평균 5.00은 이 한 차수뿐. 이후 4차 4.92·5차 4.84로 내려와 통합 4.90, 과정 순위 2위.
         </div>
       </div>
     </div>
@@ -166,19 +183,21 @@
     <div class="g2">
       <div class="ch"><canvas id="aiCompareChart"></canvas></div>
       <div>
+        <div class="tw">
         <table>
-          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/4)</th><th style="text-align:center;">2차 (4/20)</th><th style="text-align:center;">3차 (5/27)</th><th style="text-align:center;">4차 (6/15)</th><th style="text-align:center;">통합</th><th style="text-align:center;">3차→4차</th></tr></thead>
-          <tbody>
-            <tr><td>응답자</td><td style="text-align:center;">14명</td><td style="text-align:center;">28명</td><td style="text-align:center;">23명</td><td style="text-align:center;">26명</td><td style="text-align:center;">91명</td><td style="text-align:center;"><span class="change-up">+3명</span></td></tr>
-            <tr><td>전체 평균</td><td style="text-align:center;">4.36</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.80</td><td style="text-align:center;">4.64</td><td style="text-align:center;">4.68</td><td style="text-align:center;"><span class="change-down">-0.16</span></td></tr>
-            <tr><td>교육 만족</td><td style="text-align:center;">4.32</td><td style="text-align:center;">4.70</td><td style="text-align:center;">4.74</td><td style="text-align:center;">4.71</td><td style="text-align:center;">4.65</td><td style="text-align:center;"><span class="change-down">-0.03</span></td></tr>
-            <tr><td>현업 적용</td><td style="text-align:center;">4.14</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.74</td><td style="text-align:center;">4.62</td><td style="text-align:center;">4.62</td><td style="text-align:center;"><span class="change-down">-0.12</span></td></tr>
-            <tr><td>강사 만족</td><td style="text-align:center;">4.32</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.83</td><td style="text-align:center;">4.58</td><td style="text-align:center;">4.67</td><td style="text-align:center;"><span class="change-down">-0.25</span></td></tr>
-            <tr><td>운영 만족</td><td style="text-align:center;">4.54</td><td style="text-align:center;">4.89</td><td style="text-align:center;">4.87</td><td style="text-align:center;">4.65</td><td style="text-align:center;">4.76</td><td style="text-align:center;"><span class="change-down">-0.22</span></td></tr>
-          </tbody>
-        </table>
+            <thead><tr><th>항목</th><th style="text-align:center;">1차</th><th style="text-align:center;">2차</th><th style="text-align:center;">3차</th><th style="text-align:center;">4차</th><th style="text-align:center;">5차</th><th style="text-align:center;">통합</th><th style="text-align:center;">4차→5차</th></tr></thead>
+            <tbody>
+              <tr><td>응답자</td><td style="text-align:center;">14명</td><td style="text-align:center;">28명</td><td style="text-align:center;">23명</td><td style="text-align:center;">26명</td><td style="text-align:center;">25명</td><td style="text-align:center;">116명</td><td style="text-align:center;"><span class="change-down">-1명</span></td></tr>
+              <tr><td>전체 평균</td><td style="text-align:center;">4.36</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.80</td><td style="text-align:center;">4.64</td><td style="text-align:center;">4.67</td><td style="text-align:center;">4.68</td><td style="text-align:center;"><span class="change-up">+0.03</span></td></tr>
+              <tr><td>교육 만족</td><td style="text-align:center;">4.32</td><td style="text-align:center;">4.70</td><td style="text-align:center;">4.76</td><td style="text-align:center;">4.71</td><td style="text-align:center;">4.66</td><td style="text-align:center;">4.66</td><td style="text-align:center;"><span class="change-down">-0.05</span></td></tr>
+              <tr><td>현업 적용</td><td style="text-align:center;">4.14</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.74</td><td style="text-align:center;">4.62</td><td style="text-align:center;">4.48</td><td style="text-align:center;">4.59</td><td style="text-align:center;"><span class="change-down">-0.13</span></td></tr>
+              <tr><td>강사 만족</td><td style="text-align:center;">4.32</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.78</td><td style="text-align:center;">4.58</td><td style="text-align:center;">4.60</td><td style="text-align:center;">4.64</td><td style="text-align:center;"><span class="change-up">+0.02</span></td></tr>
+              <tr><td>운영 만족</td><td style="text-align:center;">4.54</td><td style="text-align:center;">4.89</td><td style="text-align:center;">4.89</td><td style="text-align:center;">4.65</td><td style="text-align:center;">4.86</td><td style="text-align:center;">4.79</td><td style="text-align:center;"><span class="change-up">+0.21</span></td></tr>
+            </tbody>
+          </table>
+          </div>
         <div style="margin-top:14px;padding:10px 12px;background:#edf7ed;border-radius:8px;font-size:11px;color:#276749;">
-          <strong>분석:</strong> 2차에서 <strong>전 영역 대폭 상승(+0.43)</strong>. 특히 <strong>현업 적용도(+0.61)</strong>가 가장 크게 개선되어 과정 내용 개선 효과 확인.
+          <strong>분석:</strong> 2차에서 <strong>전 영역 대폭 상승(+0.43)</strong>, 특히 <strong>현업 적용도(+0.61)</strong>가 가장 크게 개선. 다만 5차 현업 적용도가 4.48로 다섯 과정 5차 중 가장 낮아 통합 4.68 — 실무 연결 보강이 이 과정의 과제.
         </div>
       </div>
     </div>
@@ -190,19 +209,21 @@
     <div class="g2">
       <div class="ch"><canvas id="excelCompareChart"></canvas></div>
       <div>
+        <div class="tw">
         <table>
-          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/11)</th><th style="text-align:center;">2차 (4/27)</th><th style="text-align:center;">3차 (5/27)</th><th style="text-align:center;">4차 (6/22)</th><th style="text-align:center;">통합</th><th style="text-align:center;">3차→4차</th></tr></thead>
-          <tbody>
-            <tr><td>응답자</td><td style="text-align:center;">15명</td><td style="text-align:center;">18명</td><td style="text-align:center;">27명</td><td style="text-align:center;">25명</td><td style="text-align:center;">85명</td><td style="text-align:center;"><span class="change-down">-2명</span></td></tr>
-            <tr><td>전체 평균</td><td style="text-align:center;">4.66</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.66</td><td style="text-align:center;">4.72</td><td style="text-align:center;"><span class="change-down">-0.13</span></td></tr>
-            <tr><td>교육 만족</td><td style="text-align:center;">4.60</td><td style="text-align:center;">4.69</td><td style="text-align:center;">4.80</td><td style="text-align:center;">4.62</td><td style="text-align:center;">4.69</td><td style="text-align:center;"><span class="change-down">-0.18</span></td></tr>
-            <tr><td>현업 적용</td><td style="text-align:center;">4.47</td><td style="text-align:center;">4.67</td><td style="text-align:center;">4.70</td><td style="text-align:center;">4.52</td><td style="text-align:center;">4.60</td><td style="text-align:center;"><span class="change-down">-0.18</span></td></tr>
-            <tr><td>강사 만족</td><td style="text-align:center;">4.73</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.80</td><td style="text-align:center;">4.68</td><td style="text-align:center;">4.75</td><td style="text-align:center;"><span class="change-down">-0.12</span></td></tr>
-            <tr><td>운영 만족</td><td style="text-align:center;">4.73</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.82</td><td style="text-align:center;">4.74</td><td style="text-align:center;">4.78</td><td style="text-align:center;"><span class="change-down">-0.08</span></td></tr>
-          </tbody>
-        </table>
+            <thead><tr><th>항목</th><th style="text-align:center;">1차</th><th style="text-align:center;">2차</th><th style="text-align:center;">3차</th><th style="text-align:center;">4차</th><th style="text-align:center;">5차</th><th style="text-align:center;">통합</th><th style="text-align:center;">4차→5차</th></tr></thead>
+            <tbody>
+              <tr><td>응답자</td><td style="text-align:center;">15명</td><td style="text-align:center;">18명</td><td style="text-align:center;">27명</td><td style="text-align:center;">25명</td><td style="text-align:center;">25명</td><td style="text-align:center;">110명</td><td style="text-align:center;"><span class="change-flat">0명</span></td></tr>
+              <tr><td>전체 평균</td><td style="text-align:center;">4.66</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.79</td><td style="text-align:center;">4.66</td><td style="text-align:center;">4.93</td><td style="text-align:center;">4.77</td><td style="text-align:center;"><span class="change-up">+0.27</span></td></tr>
+              <tr><td>교육 만족</td><td style="text-align:center;">4.60</td><td style="text-align:center;">4.69</td><td style="text-align:center;">4.80</td><td style="text-align:center;">4.62</td><td style="text-align:center;">4.92</td><td style="text-align:center;">4.74</td><td style="text-align:center;"><span class="change-up">+0.30</span></td></tr>
+              <tr><td>현업 적용</td><td style="text-align:center;">4.47</td><td style="text-align:center;">4.67</td><td style="text-align:center;">4.70</td><td style="text-align:center;">4.52</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.66</td><td style="text-align:center;"><span class="change-up">+0.36</span></td></tr>
+              <tr><td>강사 만족</td><td style="text-align:center;">4.73</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.80</td><td style="text-align:center;">4.68</td><td style="text-align:center;">4.94</td><td style="text-align:center;">4.80</td><td style="text-align:center;"><span class="change-up">+0.26</span></td></tr>
+              <tr><td>운영 만족</td><td style="text-align:center;">4.73</td><td style="text-align:center;">4.81</td><td style="text-align:center;">4.82</td><td style="text-align:center;">4.74</td><td style="text-align:center;">4.96</td><td style="text-align:center;">4.82</td><td style="text-align:center;"><span class="change-up">+0.22</span></td></tr>
+            </tbody>
+          </table>
+          </div>
         <div style="margin-top:14px;padding:10px 12px;background:#fff5f5;border-radius:8px;font-size:11px;color:#9b2c2c;">
-          <strong>분석:</strong> 4차에서 전 영역 하락 (전체 -0.13). "진행이 빨랐다·숙련도 차이로 초보는 어려웠다"는 피드백 — <strong>학습자 수준차 고려한 난이도 분반·속도 조절</strong> 필요. 단 통합 4.72점으로 만족도 자체는 양호.
+          <strong>분석:</strong> 4차 전 영역 하락(-0.13) 후 <strong>5차 4.93으로 반등(+0.27)</strong>, 다섯 차수 중 가장 높음. 5차 주관식에 "전부 실습으로 진행되다 보니 여러가지를 직접 해볼 수 있어서 좋았습니다", "AI를 활용해서 자동화 하는 방법이 유익 했습니다"가 다수. 다만 "속도가 빨라서 따라하기가 조금 힘들었어요"가 남아 <strong>난이도·속도 안내</strong>는 계속 필요. 통합 4.77점.
         </div>
       </div>
     </div>
@@ -214,19 +235,21 @@
     <div class="g2">
       <div class="ch"><canvas id="workflowCompareChart"></canvas></div>
       <div>
+        <div class="tw">
         <table>
-          <thead><tr><th>항목</th><th style="text-align:center;">1차 (3/18)</th><th style="text-align:center;">2차 (4/27)</th><th style="text-align:center;">3차 (5/27)</th><th style="text-align:center;">통합</th><th style="text-align:center;">2차→3차</th></tr></thead>
-          <tbody>
-            <tr><td>응답자</td><td style="text-align:center;">17명</td><td style="text-align:center;">17명</td><td style="text-align:center;">22명</td><td style="text-align:center;">56명</td><td style="text-align:center;"><span class="change-up">+5명</span></td></tr>
-            <tr><td>전체 평균</td><td style="text-align:center;">4.52</td><td style="text-align:center;">4.84</td><td style="text-align:center;">4.62</td><td style="text-align:center;">4.66</td><td style="text-align:center;"><span class="change-down">-0.22</span></td></tr>
-            <tr><td>교육 만족</td><td style="text-align:center;">4.44</td><td style="text-align:center;">4.85</td><td style="text-align:center;">4.50</td><td style="text-align:center;">4.59</td><td style="text-align:center;"><span class="change-down">-0.35</span></td></tr>
-            <tr><td>현업 적용</td><td style="text-align:center;">4.18</td><td style="text-align:center;">4.71</td><td style="text-align:center;">4.50</td><td style="text-align:center;">4.47</td><td style="text-align:center;"><span class="change-down">-0.21</span></td></tr>
-            <tr><td>강사 만족</td><td style="text-align:center;">4.56</td><td style="text-align:center;">4.82</td><td style="text-align:center;">4.68</td><td style="text-align:center;">4.69</td><td style="text-align:center;"><span class="change-down">-0.14</span></td></tr>
-            <tr><td>운영 만족</td><td style="text-align:center;">4.74</td><td style="text-align:center;">4.91</td><td style="text-align:center;">4.73</td><td style="text-align:center;">4.79</td><td style="text-align:center;"><span class="change-down">-0.18</span></td></tr>
-          </tbody>
-        </table>
+            <thead><tr><th>항목</th><th style="text-align:center;">1차</th><th style="text-align:center;">2차</th><th style="text-align:center;">3차</th><th style="text-align:center;">4차</th><th style="text-align:center;">5차</th><th style="text-align:center;">통합</th><th style="text-align:center;">4차→5차</th></tr></thead>
+            <tbody>
+              <tr><td>응답자</td><td style="text-align:center;">17명</td><td style="text-align:center;">17명</td><td style="text-align:center;">22명</td><td style="text-align:center;">9명</td><td style="text-align:center;">12명</td><td style="text-align:center;">77명</td><td style="text-align:center;"><span class="change-up">+3명</span></td></tr>
+              <tr><td>전체 평균</td><td style="text-align:center;">4.52</td><td style="text-align:center;">4.84</td><td style="text-align:center;">4.62</td><td style="text-align:center;">4.62</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.69</td><td style="text-align:center;"><span class="change-up">+0.26</span></td></tr>
+              <tr><td>교육 만족</td><td style="text-align:center;">4.44</td><td style="text-align:center;">4.85</td><td style="text-align:center;">4.52</td><td style="text-align:center;">4.50</td><td style="text-align:center;">4.88</td><td style="text-align:center;">4.63</td><td style="text-align:center;"><span class="change-up">+0.38</span></td></tr>
+              <tr><td>현업 적용</td><td style="text-align:center;">4.18</td><td style="text-align:center;">4.71</td><td style="text-align:center;">4.50</td><td style="text-align:center;">4.00</td><td style="text-align:center;">4.75</td><td style="text-align:center;">4.45</td><td style="text-align:center;"><span class="change-up">+0.75</span></td></tr>
+              <tr><td>강사 만족</td><td style="text-align:center;">4.56</td><td style="text-align:center;">4.82</td><td style="text-align:center;">4.66</td><td style="text-align:center;">4.67</td><td style="text-align:center;">4.92</td><td style="text-align:center;">4.71</td><td style="text-align:center;"><span class="change-up">+0.25</span></td></tr>
+              <tr><td>운영 만족</td><td style="text-align:center;">4.74</td><td style="text-align:center;">4.91</td><td style="text-align:center;">4.73</td><td style="text-align:center;">5.00</td><td style="text-align:center;">4.92</td><td style="text-align:center;">4.83</td><td style="text-align:center;"><span class="change-down">-0.08</span></td></tr>
+            </tbody>
+          </table>
+          </div>
         <div style="margin-top:14px;padding:10px 12px;background:#edf7ed;border-radius:8px;font-size:11px;color:#276749;">
-          <strong>분석:</strong> 2차에서 <strong>전 영역 대폭 상승(+0.32)</strong>. 특히 <strong>현업 적용도(+0.53)</strong>와 <strong>교육 만족(+0.41)</strong>이 크게 개선. AI·Copilot 실무 활용 수요 반영 효과.
+          <strong>분석:</strong> 2차에서 <strong>전 영역 대폭 상승(+0.32)</strong>, 특히 <strong>현업 적용도(+0.53)</strong>와 <strong>교육 만족(+0.41)</strong>이 크게 개선. <strong>5차는 4.88로 다섯 차수 중 가장 높고</strong>, 4차에 4.00까지 내려갔던 현업 적용도가 4.75로 올라섬(+0.75). 5차 주관식 "ai와 함께 문제해결 방식이 좋았음", "Ai활용 케이스를 보여주시는게 유익했습니다".
         </div>
       </div>
     </div>
@@ -235,21 +258,24 @@
   <!-- Question Detail -->
   <div class="section">
     <div class="st"><span class="ic">🔍</span> 문항별 상세 분석</div>
+    <div style="font-size:11px;color:#718096;margin:-4px 0 10px;">※ 문항별 값에서 AI로 끝내는 데이터 정리 1차(14명 · 98건)는 원본 응답 파일이 없어 제외 (2~5차 102명 기준), 나머지 넷은 전 차수</div>
     <div class="ch" style="height:380px;"><canvas id="questionDetailChart"></canvas></div>
   </div>
 
   <!-- Score Distribution -->
   <div class="section">
-    <div class="st"><span class="ic">📈</span> 점수 분포 (전체 1,945건)</div>
+    <div class="st"><span class="ic">📈</span> 점수 분포 (3,254건)</div>
     <div class="g2">
       <div class="ch"><canvas id="distributionChart"></canvas></div>
       <div>
-        <table>
-          <thead><tr><th>점수</th><th style="text-align:center;">응답 수</th><th style="text-align:center;">비율</th><th>그래프</th></tr></thead>
-          <tbody id="distTable"></tbody>
-        </table>
+        <div class="tw tw-s">
+          <table>
+            <thead><tr><th>점수</th><th style="text-align:center;">응답 수</th><th style="text-align:center;">비율</th><th>그래프</th></tr></thead>
+            <tbody id="distTable"></tbody>
+          </table>
+          </div>
         <div style="margin-top:14px;padding:10px 12px;background:#f7fafc;border-radius:8px;font-size:11px;color:#4a5568;">
-          <strong>요약:</strong> 전체 <span style="color:#38a169;font-weight:600;">95.1%</span>가 4점 이상 긍정 응답. 5점 비율 83.1%.
+          <strong>요약:</strong> <span style="color:#38a169;font-weight:600;">96.2%</span>가 4점 이상 긍정 응답. 5점 비율 84.7%.<br>※ 분포는 24개 차수 기준. AI로 끝내는 데이터 정리 1차(98건)는 원본 응답 파일이 없어 제외, 척도 미응답 1건 제외
         </div>
       </div>
     </div>
@@ -273,24 +299,24 @@
       <div class="cc">
         <div class="cn" style="color:#38a169;font-size:13px;margin-bottom:8px;">강점 (Strengths)</div>
         <ul style="font-size:12px;color:#4a5568;padding-left:16px;line-height:2;">
-          <li>전체 평균 <strong>4.77점/5점</strong>, 350명 응답으로 높은 만족도 유지</li>
-          <li><strong>Smart Writing 4회차 연속 4.9점대</strong> (4차 4.94·통합 4.92로 단독 1위) → 콘텐츠 안정성·재현성 입증</li>
-          <li><strong>원페이지 3차에서 14명 전원 Q1~Q7 모두 5점 만점</strong> → 5점 만점 차수 첫 사례, 통합 평균 4.91로 SW와 공동 1위 도약</li>
-          <li>워크플로우 2차에서 1차 대비 <strong>+0.32점</strong> 대폭 상승 → 특히 현업 적용도 +0.53</li>
-          <li>엑셀 비서 2차에서 1차 대비 <strong>+0.09점</strong> 추가 상승 → VBA·AI 실습 호응 지속</li>
-          <li>전 과정에서 <strong>운영 만족도</strong>가 가장 높아 교육 운영 체계 우수</li>
+          <li>전체 평균 <strong>4.79점/5점</strong>, 479명 응답으로 높은 만족도 유지</li>
+          <li><strong>Smart Writing 통합 4.93점 단독 1위</strong> (1차 4.81 이후 2~5차 네 차수 연속 4.9점대) → 콘텐츠 안정성·재현성 입증</li>
+          <li><strong>원페이지 3차에서 14명 전원 Q1~Q7 모두 5점 만점</strong> → 전체 평균 5.00은 지금까지 이 한 차수뿐, 과정 통합 4.90으로 2위</li>
+          <li><strong>엑셀 비서 5차 4.93점</strong>, 4차 대비 +0.27 반등 → AI로 VBA 코드를 짜는 실습에 호응 집중</li>
+          <li><strong>워크플로우 5차 4.88점</strong>, 다섯 차수 중 최고 (현업 적용도 4.00 → 4.75)</li>
+          <li>전 과정에서 <strong>운영 만족도(4.85)</strong>가 가장 높아 교육 운영 체계 우수</li>
           <li>실습 위주 교육 + AI 활용 연계에 대한 학습자 호응 높음</li>
         </ul>
       </div>
       <div class="cc">
         <div class="cn" style="color:#e53e3e;font-size:13px;margin-bottom:8px;">개선 포인트 (Improvements)</div>
         <ul style="font-size:12px;color:#4a5568;padding-left:16px;line-height:2;">
-          <li><strong>엑셀 비서 4차 4.66점</strong>, 3차 대비 -0.13 하락 (진행 속도·학습자 숙련도 차이) — 난이도 분반·속도 조절 필요</li>
-          <li>워크플로우 통합 <strong>4.66점</strong>, AI 데이터 <strong>4.68점</strong> — 현업 적용도 지속 보강 필요</li>
-          <li>전 과정 <strong>현업 적용도</strong>가 가장 낮은 영역 → 실무 사례 확대</li>
-          <li>학습자 수준 차이 고려한 <strong>난이도 분반</strong> 검토 (특히 AI·엑셀 과정)</li>
-          <li>일부 과정 <strong>교육 시간 부족</strong> 피드백 → 시간 확대 or 핵심 집중</li>
-          <li><strong>AI 심화 교육</strong>(프롬프트, AI 에이전트)에 대한 수요 매우 높음</li>
+          <li><strong>AI로 끝내는 데이터 정리 통합 4.68점</strong>, 5차 현업 적용도 4.48 — "데이터가 좀 더 대규모여야 실무와 비슷한 환경일 것 같다" → 실무 데이터 규모 확대</li>
+          <li>전 과정 <strong>현업 적용도(4.69)</strong>가 가장 낮은 영역 → 실무 사례 확대</li>
+          <li>학습자 수준 차이 고려한 <strong>난이도 분반</strong> 검토 — "수강생별 수준편차가 너무 큼", "pivot테이블 실습으로 넘어가는 과정에서 난이도점프가 느껴질 수 있을 것 같음"</li>
+          <li>일부 과정 <strong>교육 시간 부족</strong> 피드백 → 시간 확대 or 핵심 집중 ("수업시간이 조금더 길어야할 것 같아요", "시간을 늘려 실습을 할 수 있었으면 좋겠습니다")</li>
+          <li><strong>AI 심화 교육</strong>(프롬프트, AI 에이전트)에 대한 수요 매우 높음 — "AI agent 활용", "AI 프롬프트 효율화", "보고서 작성 AI agent"</li>
+          <li><strong>과정 간 수강 순서 안내 부재</strong> — "이번교육이 먼저인줄 모르고 2번째 엑셀비서만들기를 먼저 듣고 이걸 들었네요", "앞선 기본과정을 수강하고 들었으면 더 도움이 되었을것 같음" → 과정 소개에 선후 관계 표기</li>
         </ul>
       </div>
     </div>
@@ -304,7 +330,7 @@ const C={g:'#38a169',b:'#3182ce',y:'#d69e2e',r:'#e53e3e',p:'#805ad5'};
 new Chart(document.getElementById('courseOverviewChart'),{
   type:'bar',
   data:{labels:['Smart Writing\n(통합)','원페이지 기획\n(통합)','엑셀 비서\n(통합)','워크플로우\n(통합)','AI 데이터\n(통합)'],
-    datasets:[{label:'평균 만족도',data:[4.92,4.91,4.72,4.66,4.68],
+    datasets:[{label:'평균 만족도',data:[4.93,4.90,4.77,4.69,4.68],
       backgroundColor:[C.b+'33',C.g+'33',C.y+'33',C.r+'33',C.p+'33'],
       borderColor:[C.b,C.g,C.y,C.r,C.p],borderWidth:2,borderRadius:8,barThickness:40}]},
   options:{responsive:true,maintainAspectRatio:false,
@@ -317,11 +343,11 @@ new Chart(document.getElementById('categoryRadarChart'),{
   type:'radar',
   data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
     datasets:[
-      {label:'Smart Writing',data:[4.93,4.90,4.95,4.90],borderColor:C.b,backgroundColor:C.b+'22',pointRadius:4,borderWidth:2},
-      {label:'원페이지 기획',data:[4.88,4.90,4.90,4.95],borderColor:C.g,backgroundColor:C.g+'22',pointRadius:4,borderWidth:2},
-      {label:'엑셀 비서(통합)',data:[4.69,4.60,4.75,4.78],borderColor:C.y,backgroundColor:C.y+'22',pointRadius:4,borderWidth:2},
-      {label:'AI 데이터',data:[4.61,4.57,4.62,4.73],borderColor:C.p,backgroundColor:C.p+'22',pointRadius:4,borderWidth:2},
-      {label:'워크플로우(통합)',data:[4.65,4.45,4.69,4.83],borderColor:C.r,backgroundColor:C.r+'22',pointRadius:4,borderWidth:2},
+      {label:'Smart Writing',data:[4.93,4.90,4.95,4.91],borderColor:C.b,backgroundColor:C.b+'22',pointRadius:4,borderWidth:2},
+      {label:'원페이지 기획',data:[4.85,4.86,4.92,4.94],borderColor:C.g,backgroundColor:C.g+'22',pointRadius:4,borderWidth:2},
+      {label:'엑셀 비서',data:[4.74,4.66,4.80,4.82],borderColor:C.y,backgroundColor:C.y+'22',pointRadius:4,borderWidth:2},
+      {label:'워크플로우',data:[4.63,4.45,4.71,4.83],borderColor:C.r,backgroundColor:C.r+'22',pointRadius:4,borderWidth:2},
+      {label:'AI 데이터',data:[4.66,4.59,4.64,4.79],borderColor:C.p,backgroundColor:C.p+'22',pointRadius:4,borderWidth:2},
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     scales:{r:{min:3.6,max:5.0,ticks:{stepSize:.3,font:{size:9}},pointLabels:{font:{size:11,weight:'600'}}}},
@@ -333,10 +359,11 @@ new Chart(document.getElementById('swCompareChart'),{
   type:'bar',
   data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
     datasets:[
-      {label:'1차 (3/9)',data:[4.79,4.86,4.86,4.75],backgroundColor:C.b+'55',borderColor:C.b,borderWidth:2,borderRadius:6},
-      {label:'2차 (4/7)',data:[4.95,4.89,4.92,4.95],backgroundColor:'#2f855a55',borderColor:'#2f855a',borderWidth:2,borderRadius:6},
-      {label:'3차 (5/11)',data:[4.95,5.00,4.98,4.95],backgroundColor:'#d6936855',borderColor:'#d69e2e',borderWidth:2,borderRadius:6},
-      {label:'4차 (6/22)',data:[4.98,4.84,5.00,4.90],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
+      {label:'1차',data:[4.79,4.86,4.86,4.75],backgroundColor:C.b+'55',borderColor:C.b,borderWidth:2,borderRadius:6},
+      {label:'2차',data:[4.95,4.89,4.92,4.95],backgroundColor:'#2f855a55',borderColor:'#2f855a',borderWidth:2,borderRadius:6},
+      {label:'3차',data:[4.95,5.00,4.97,4.95],backgroundColor:'#d6936855',borderColor:'#d69e2e',borderWidth:2,borderRadius:6},
+      {label:'4차',data:[4.98,4.84,5.00,4.90],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
+      {label:'5차',data:[4.93,4.91,4.96,4.96],backgroundColor:'#805ad555',borderColor:'#805ad5',borderWidth:2,borderRadius:6},
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
@@ -348,9 +375,11 @@ new Chart(document.getElementById('opCompareChart'),{
   type:'bar',
   data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
     datasets:[
-      {label:'1차 (3월)',data:[4.81,4.88,4.88,5.00],backgroundColor:C.g+'55',borderColor:C.g,borderWidth:2,borderRadius:6},
-      {label:'2차 (4월)',data:[4.81,4.83,4.83,4.89],backgroundColor:'#d6bcfa55',borderColor:'#805ad5',borderWidth:2,borderRadius:6},
-      {label:'3차 (6월)',data:[5.00,5.00,5.00,5.00],backgroundColor:'#9ae6b455',borderColor:'#38a169',borderWidth:2,borderRadius:6},
+      {label:'1차',data:[4.81,4.88,4.88,5.00],backgroundColor:C.g+'55',borderColor:C.g,borderWidth:2,borderRadius:6},
+      {label:'2차',data:[4.81,4.83,4.83,4.89],backgroundColor:'#d6bcfa55',borderColor:'#805ad5',borderWidth:2,borderRadius:6},
+      {label:'3차',data:[5.00,5.00,5.00,5.00],backgroundColor:'#9ae6b455',borderColor:'#38a169',borderWidth:2,borderRadius:6},
+      {label:'4차',data:[4.88,4.76,4.98,4.98],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
+      {label:'5차',data:[4.73,4.87,4.90,4.87],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
@@ -362,10 +391,11 @@ new Chart(document.getElementById('aiCompareChart'),{
   type:'bar',
   data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
     datasets:[
-      {label:'1차 (3월)',data:[4.32,4.14,4.32,4.54],backgroundColor:C.p+'55',borderColor:C.p,borderWidth:2,borderRadius:6},
-      {label:'2차 (4월)',data:[4.70,4.75,4.79,4.89],backgroundColor:'#9ae6b455',borderColor:'#38a169',borderWidth:2,borderRadius:6},
-      {label:'3차 (5월)',data:[4.74,4.74,4.83,4.87],backgroundColor:'#fbb6ce55',borderColor:'#d53f8c',borderWidth:2,borderRadius:6},
-      {label:'4차 (6/15)',data:[4.71,4.62,4.58,4.65],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
+      {label:'1차',data:[4.32,4.14,4.32,4.54],backgroundColor:C.p+'55',borderColor:C.p,borderWidth:2,borderRadius:6},
+      {label:'2차',data:[4.70,4.75,4.79,4.89],backgroundColor:'#9ae6b455',borderColor:'#38a169',borderWidth:2,borderRadius:6},
+      {label:'3차',data:[4.76,4.74,4.78,4.89],backgroundColor:'#fbb6ce55',borderColor:'#d53f8c',borderWidth:2,borderRadius:6},
+      {label:'4차',data:[4.71,4.62,4.58,4.65],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
+      {label:'5차',data:[4.66,4.48,4.60,4.86],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
@@ -377,10 +407,11 @@ new Chart(document.getElementById('excelCompareChart'),{
   type:'bar',
   data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
     datasets:[
-      {label:'1차 (3월)',data:[4.60,4.47,4.73,4.73],backgroundColor:C.y+'55',borderColor:C.y,borderWidth:2,borderRadius:6},
-      {label:'2차 (4월)',data:[4.69,4.67,4.81,4.81],backgroundColor:'#ed893655',borderColor:'#ed8936',borderWidth:2,borderRadius:6},
-      {label:'3차 (5월)',data:[4.80,4.70,4.80,4.82],backgroundColor:'#68d39155',borderColor:'#38a169',borderWidth:2,borderRadius:6},
-      {label:'4차 (6/22)',data:[4.62,4.52,4.68,4.74],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
+      {label:'1차',data:[4.60,4.47,4.73,4.73],backgroundColor:C.y+'55',borderColor:C.y,borderWidth:2,borderRadius:6},
+      {label:'2차',data:[4.69,4.67,4.81,4.81],backgroundColor:'#ed893655',borderColor:'#ed8936',borderWidth:2,borderRadius:6},
+      {label:'3차',data:[4.80,4.70,4.80,4.82],backgroundColor:'#68d39155',borderColor:'#38a169',borderWidth:2,borderRadius:6},
+      {label:'4차',data:[4.62,4.52,4.68,4.74],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
+      {label:'5차',data:[4.92,4.88,4.94,4.96],backgroundColor:'#805ad555',borderColor:'#805ad5',borderWidth:2,borderRadius:6},
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
@@ -392,9 +423,11 @@ new Chart(document.getElementById('workflowCompareChart'),{
   type:'bar',
   data:{labels:['교육 만족','현업 적용','강사 만족','운영 만족'],
     datasets:[
-      {label:'1차 (3월)',data:[4.44,4.18,4.56,4.74],backgroundColor:C.r+'55',borderColor:C.r,borderWidth:2,borderRadius:6},
-      {label:'2차 (4월)',data:[4.85,4.71,4.82,4.91],backgroundColor:'#fc818155',borderColor:'#fc8181',borderWidth:2,borderRadius:6},
-      {label:'3차 (5월)',data:[4.50,4.50,4.68,4.73],backgroundColor:'#b794f455',borderColor:'#805ad5',borderWidth:2,borderRadius:6},
+      {label:'1차',data:[4.44,4.18,4.56,4.74],backgroundColor:C.r+'55',borderColor:C.r,borderWidth:2,borderRadius:6},
+      {label:'2차',data:[4.85,4.71,4.82,4.91],backgroundColor:'#fc818155',borderColor:'#fc8181',borderWidth:2,borderRadius:6},
+      {label:'3차',data:[4.52,4.50,4.66,4.73],backgroundColor:'#b794f455',borderColor:'#805ad5',borderWidth:2,borderRadius:6},
+      {label:'4차',data:[4.50,4.00,4.67,5.00],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
+      {label:'5차',data:[4.88,4.75,4.92,4.92],backgroundColor:'#4299e155',borderColor:'#4299e1',borderWidth:2,borderRadius:6},
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}}},
@@ -407,23 +440,22 @@ new Chart(document.getElementById('questionDetailChart'),{
   type:'bar',
   data:{labels:qs,
     datasets:[
-      {label:'SW(통합)',data:[4.94,4.92,4.90,4.95,4.95,4.87,4.92],backgroundColor:C.b+'88',borderColor:C.b,borderWidth:1},
-      {label:'원페이지(통합)',data:[4.85,4.90,4.90,4.95,4.85,4.95,4.95],backgroundColor:C.g+'88',borderColor:C.g,borderWidth:1},
-      {label:'엑셀 비서(통합)',data:[4.69,4.68,4.60,4.75,4.75,4.80,4.75],backgroundColor:C.y+'88',borderColor:C.y,borderWidth:1},
-      {label:'AI 데이터(통합)',data:[4.60,4.62,4.57,4.61,4.63,4.75,4.72],backgroundColor:C.p+'88',borderColor:C.p,borderWidth:1},
-      {label:'워크플로우(통합)',data:[4.62,4.67,4.45,4.71,4.68,4.83,4.82],backgroundColor:C.r+'88',borderColor:C.r,borderWidth:1},
+      {label:'SW(통합)',data:[4.93,4.93,4.90,4.95,4.95,4.89,4.93],backgroundColor:C.b+'88',borderColor:C.b,borderWidth:1},
+      {label:'원페이지(통합)',data:[4.80,4.89,4.86,4.95,4.89,4.95,4.93],backgroundColor:C.g+'88',borderColor:C.g,borderWidth:1},
+      {label:'엑셀 비서(통합)',data:[4.74,4.75,4.66,4.80,4.79,4.84,4.80],backgroundColor:C.y+'88',borderColor:C.y,borderWidth:1},
+      {label:'워크플로우(통합)',data:[4.58,4.68,4.45,4.73,4.70,4.83,4.83],backgroundColor:C.r+'88',borderColor:C.r,borderWidth:1},
+      {label:'AI 데이터(통합)',data:[4.73,4.69,4.65,4.67,4.71,4.84,4.80],backgroundColor:C.p+'88',borderColor:C.p,borderWidth:1},
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top',labels:{font:{size:10},usePointStyle:true,padding:8}}},
     scales:{y:{min:3.6,max:5.0,ticks:{stepSize:.2},grid:{color:'#f0f0f0'}},x:{grid:{display:false},ticks:{font:{size:10},maxRotation:25}}}}
 });
 
-// 7. Distribution (누적: 기존 1315건 + 1843 원페이지 3차 98건 = 1413건)
-const dd={5:1617,4:232,3:80,2:14,1:2},tot=Object.values(dd).reduce((a,b)=>a+b,0);
+const dd={5:2757,4:374,3:98,2:19,1:6},tot=Object.values(dd).reduce((a,b)=>a+b,0);
 new Chart(document.getElementById('distributionChart'),{
   type:'doughnut',
   data:{labels:['5점','4점','3점','2점','1점'],
-    datasets:[{data:[1617,232,80,14,2],backgroundColor:['#38a169','#68d391','#fbd38d','#fc8181','#e53e3e'],borderWidth:2,borderColor:'#fff'}]},
+    datasets:[{data:[2757,374,98,19,6],backgroundColor:['#38a169','#68d391','#fbd38d','#fc8181','#e53e3e'],borderWidth:2,borderColor:'#fff'}]},
   options:{responsive:true,maintainAspectRatio:false,cutout:'55%',
     plugins:{legend:{position:'bottom',labels:{font:{size:10},usePointStyle:true,padding:10}},
       tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed}건 (${(ctx.parsed/tot*100).toFixed(1)}%)`}}}}
